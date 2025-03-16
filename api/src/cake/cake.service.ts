@@ -1,26 +1,56 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCakeDto } from './dto/create-cake.dto';
-import { UpdateCakeDto } from './dto/update-cake.dto';
+import { PrismaService } from 'src/services/prisma/prisma.service';
+import { Cake, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CakeService {
-  create(createCakeDto: CreateCakeDto) {
-    return 'This action adds a new cake';
+  constructor(private prisma: PrismaService) {}
+
+  async createCake(data: Prisma.CakeCreateInput): Promise<Cake> {
+    return this.prisma.cake.create({
+      data,
+    });
   }
 
-  findAll() {
-    return `This action returns all cake`;
+  async findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.CakeWhereUniqueInput;
+    where?: Prisma.CakeWhereInput;
+    orderBy?: Prisma.CakeOrderByWithRelationInput;
+  }): Promise<Cake[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.cake.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cake`;
+  async updateCake(params: {
+    where: Prisma.CakeWhereUniqueInput;
+    data: Prisma.CakeUpdateInput;
+  }): Promise<Cake> {
+    const { where, data } = params;
+    return this.prisma.cake.update({
+      data,
+      where,
+    });
   }
 
-  update(id: number, updateCakeDto: UpdateCakeDto) {
-    return `This action updates a #${id} cake`;
+  async findOneCake(
+    CakeWhereUniqueInput: Prisma.CakeWhereUniqueInput,
+  ): Promise<Cake | null> {
+    return this.prisma.cake.findUnique({
+      where: CakeWhereUniqueInput,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cake`;
+  async deleteCake(where: Prisma.CakeWhereUniqueInput): Promise<Cake> {
+    return this.prisma.cake.delete({
+      where,
+    });
   }
 }

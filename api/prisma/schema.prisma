@@ -29,6 +29,7 @@ model Customer {
   email         String?
   phone         String?
   address       String?
+  orders        Order[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -37,16 +38,23 @@ model Cake {
   id          String   @id @default(uuid())
   name        String
   price       Float
+  orders      Order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime? @updatedAt
 }
 
 model Order {
   id              String   @id @default(uuid())
-  customer        Customer
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
   cakes           Cake[]
   total           Float
   Withdrawal_date DateTime
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
 }
