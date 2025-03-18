@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {Cake, Order, Prisma} from '@prisma/client';
+import { Order, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 
 @Injectable()
@@ -29,14 +29,24 @@ export class OrderService {
     });
   }
 
+  // async updateOrder(params: {
+  //   where: Prisma.OrderWhereUniqueInput;
+  //   data: Prisma.OrderUpdateInput;
+  // }): Promise<Order> {
+  //   const { where, data } = params;
+  //   return this.prisma.order.update({
+  //     data,
+  //     where,
+  //   });
+  // }
   async updateOrder(params: {
     where: Prisma.OrderWhereUniqueInput;
     data: Prisma.OrderUpdateInput;
-  }): Promise<Order> {
+  }) {
     const { where, data } = params;
     return this.prisma.order.update({
-      data,
       where,
+      data,
     });
   }
 

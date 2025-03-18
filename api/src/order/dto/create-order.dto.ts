@@ -5,6 +5,7 @@ export class CreateOrderDto {
   cakes: Cake[];
   total: number;
   Withdrawal_date: Date;
+  Delivered: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

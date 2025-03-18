@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -29,7 +29,7 @@ export class OrderController {
   })
   create(@Body() createOrderDto: CreateOrderDto) {
     // TODO: Handle relation on DTOs
-    return this.orderService.createOrder(createOrderDto);
+    return this.orderService.createOrder(createOrderDto as any);
   }
 
   @Get()
@@ -50,5 +50,18 @@ export class OrderController {
     return this.orderService.findOneOrder({ id });
   }
 
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update order' })
+  @ApiResponse({
+    status: 200,
+    description: 'Order updated',
+  })
+  @ApiResponse({ status: 500, description: 'Error' })
+  updateOne(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
+    return this.orderService.updateOrder({
+      where: { id },
+      data: updateOrderDto,
+    });
+  }
   // TODO: Continue router
 }
