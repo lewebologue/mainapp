@@ -35,19 +35,19 @@ model Customer {
 }
 
 model Cake {
-  id          String   @id @default(uuid())
-  name        String
-  price       Float
-  orders      Order[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime? @updatedAt
+  id        String   @id @default(uuid())
+  name      String
+  price     Float
+  orders    Order[]  @relation("OrderCakes")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Order {
   id              String   @id @default(uuid())
   customerId      String
   customer        Customer @relation(fields: [customerId], references: [id])
-  cakes           Cake[]
+  cakes           Cake[]   @relation("OrderCakes")
   total           Float
   Withdrawal_date DateTime
   delivered       Boolean  @default(false)

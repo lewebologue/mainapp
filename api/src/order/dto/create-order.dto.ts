@@ -1,8 +1,6 @@
-import { Customer, Cake } from '@prisma/client';
-
 export class CreateOrderDto {
-  customer: Customer;
-  cakes: Cake[];
+  customer: { connect: { id: string } };
+  cakes: { id: string }[];
   total: number;
   Withdrawal_date: Date;
   Delivered: boolean;

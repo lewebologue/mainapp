@@ -28,8 +28,13 @@ export class OrderController {
     description: 'Bad request',
   })
   create(@Body() createOrderDto: CreateOrderDto) {
-    // TODO: Handle relation on DTOs
-    return this.orderService.createOrder(createOrderDto);
+    const data = {
+      ...createOrderDto,
+      cakes: {
+        connect: createOrderDto.cakes.map((cake) => ({ id: cake.id })),
+      },
+    };
+    return this.orderService.createOrder(data);
   }
 
   @Get()
@@ -63,5 +68,12 @@ export class OrderController {
       data: updateOrderDto,
     });
   }
-  // TODO: Continue router
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete Order' })
+  @ApiResponse({ status: 200, description: 'Order deleted' })
+  @ApiResponse({ status: 500, description: 'Error' })
+  deleteOne(@Param('id') id: string) {
+    return this.orderService.deleteOrder({ id });
+  }
 }
