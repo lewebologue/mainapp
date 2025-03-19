@@ -29,7 +29,7 @@ export class OrderController {
   })
   create(@Body() createOrderDto: CreateOrderDto) {
     // TODO: Handle relation on DTOs
-    return this.orderService.createOrder(createOrderDto as any);
+    return this.orderService.createOrder(createOrderDto);
   }
 
   @Get()
