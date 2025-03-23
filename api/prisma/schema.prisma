@@ -38,6 +38,7 @@ model Cake {
   id        String   @id @default(uuid())
   name      String
   price     Float
+  parts     Float
   orders    Order[]  @relation("OrderCakes")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
