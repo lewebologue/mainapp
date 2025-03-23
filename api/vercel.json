@@ -1,9 +1,5 @@
 {
   "version": 2,
-  "scripts": {
-    "build": "nest build",
-    "start:prod": "node dist/main"
-  },
   "builds": [
     {
       "src": "dist/**/*.js",
