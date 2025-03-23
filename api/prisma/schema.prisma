@@ -50,6 +50,9 @@ model Order {
   cakes           Cake[]   @relation("OrderCakes")
   total           Float
   Withdrawal_date DateTime
+  PaymentMethod   PaymentMethod
+  deposit         Float?
+  remaining_balance Float?
   delivered       Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -58,4 +61,11 @@ model Order {
 enum Role {
   USER
   ADMIN
+}
+
+enum PaymentMethod {
+  ESPECES
+  CB
+  CHEQUE
+  VIREMENT
 }
