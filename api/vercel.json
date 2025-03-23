@@ -1,16 +1,19 @@
 {
   "version": 2,
+  "scripts": {
+    "build": "nest build",
+    "start:prod": "node dist/main"
+  },
   "builds": [
     {
-      "src": "dist/main.js",
+      "src": "dist/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "dist/main.js"
     }
-  ],
-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
+  ]
 }
