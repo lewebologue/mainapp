@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
@@ -17,11 +9,7 @@ export class CustomerController {
 
   @Post()
   create(@Body() createCustomerDto: CreateCustomerDto) {
-    const data = {
-      ...createCustomerDto,
-      orders: createCustomerDto.orders?.map(order => ({ connect: { id: order.id } })),
-    };
-    return this.customerService.create(data);
+    return this.customerService.create(createCustomerDto);
   }
 
   @Get()
@@ -31,7 +19,7 @@ export class CustomerController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
+    return this.customerService.findOne({ id });
   }
 
   @Patch(':id')
@@ -39,11 +27,9 @@ export class CustomerController {
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
-    return this.customerService.update(+id, updateCustomerDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
+    return this.customerService.update({
+      where: { id },
+      data: updateCustomerDto,
+    });
   }
 }

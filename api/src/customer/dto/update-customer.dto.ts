@@ -7,7 +7,6 @@ export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {
   email?: string;
   phone?: string;
   address?: string;
-  orders?: { id: string }[];
   createdAt?: Date;
   updatedAt?: Date;
 }
