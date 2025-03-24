@@ -1,4 +1,4 @@
-import { PaymentMethod } from 'src/enums/paymentMehtod.enum';
+import { PaymentMethod } from '@prisma/client';
 
 export class UpdateOrderDto {
   customer?: { connect: { id: string } };

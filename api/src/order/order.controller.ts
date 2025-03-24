@@ -63,9 +63,17 @@ export class OrderController {
   })
   @ApiResponse({ status: 500, description: 'Error' })
   updateOne(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
+    const data = {
+      ...updateOrderDto,
+      cakes: updateOrderDto.cakes
+        ? {
+            connect: updateOrderDto.cakes.map((cake) => ({ id: cake.id })),
+          }
+        : undefined,
+    };
     return this.orderService.updateOrder({
       where: { id },
-      data: updateOrderDto,
+      data,
     });
   }
 
