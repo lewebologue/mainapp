@@ -1,0 +1,16 @@
+#navbar_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  .image_container {
+    width: 20%;
+  }
+  .menu_container {
+    width: 80%;
+    .button-container {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}
