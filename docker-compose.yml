@@ -1,41 +1,32 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  frontend:
+  app:
     build:
-      context: ./frontend
+      context: ./app
       dockerfile: Dockerfile
-    container_name: angular-frontend
+    container_name: angular-app
     ports:
-      - "${FRONTEND_PORT:-4200}:80"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - backend
-    env_file:
-      - ./frontend/.env
+      - "80:80"
     networks:
       - app-network
     restart: unless-stopped
 
-  backend:
+  api:
     build:
-      context: ./backend
+      context: ./api
       dockerfile: Dockerfile
-    container_name: nestjs-backend
+    container_name: nestjs-api
     ports:
-      - "${BACKEND_PORT:-3000}:3000"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    depends_on:
-      - db
-    env_file:
-      - ./backend/.env
+      - "3000:3000"
     environment:
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
+      - DATABASE_USER=${DB_USER:-postgres}
+      - DATABASE_PASSWORD=${DB_PASSWORD:-postgres}
+      - DATABASE_NAME=${DB_NAME:-main_db}
+    depends_on:
+      - db
     networks:
       - app-network
     restart: unless-stopped
@@ -44,7 +35,7 @@ services:
     image: postgres:15
     container_name: postgres-db
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_USER=${DB_USER:-postgres}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}

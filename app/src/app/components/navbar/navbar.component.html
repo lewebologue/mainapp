@@ -4,12 +4,25 @@
   </div>
   <div class="menu_container">
     <div class="button-container">
-      <app-button [text]="'COMMANDES'" [icon]="'list_alt'"></app-button>
-      <app-button [text]="'CLIENTS'" [icon]="'group'"></app-button>
-      <app-button [text]="'GATEAUX'" [icon]="'cake'"></app-button>
+      <app-button
+        [text]="'COMMANDES'"
+        [icon]="'list_alt'"
+        [route]="'orders'"
+      ></app-button>
+      <app-button
+        [text]="'CLIENTS'"
+        [icon]="'group'"
+        [route]="'clients'"
+      ></app-button>
+      <app-button
+        [text]="'GATEAUX'"
+        [icon]="'cake'"
+        [route]="'cakes'"
+      ></app-button>
       <app-button
         [text]="'STATISTIQUES'"
         [icon]="'signal_cellular_alt'"
+        [route]="'kpi'"
       ></app-button>
     </div>
   </div>
