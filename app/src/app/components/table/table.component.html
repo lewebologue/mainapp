@@ -1,5 +1,14 @@
 <div class="title">
   <h2>{{ title }}</h2>
+  @if (addButton){
+  <div class="add_button_container">
+    <app-button
+      [text]="'Ajouter'"
+      [icon]="'add'"
+      [openModal]="true"
+    ></app-button>
+  </div>
+  }
 </div>
 <div class="table_container">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

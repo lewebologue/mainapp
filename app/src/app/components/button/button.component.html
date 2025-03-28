@@ -1,6 +1,12 @@
-<button mat-fab extended [disabled]="disabled" [routerLink]="route">
+<button
+  mat-fab
+  extended
+  [disabled]="disabled"
+  [routerLink]="route"
+  (click)="onClick($event)"
+>
   @if (icon) {
-    <mat-icon>{{ icon }}</mat-icon>
+  <mat-icon>{{ icon }}</mat-icon>
   }
   {{ text }}
 </button>
