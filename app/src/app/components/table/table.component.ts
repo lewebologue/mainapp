@@ -14,8 +14,8 @@ import { ButtonComponent } from '../button/button.component';
 export class TableComponent implements AfterViewInit, OnChanges {
   @Input() displayedColumns: string[] = [];
   @Input() dataSource: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
-  @Input() title: string = '';
-  @Input() addButton: boolean = false;
+  @Input() title = '';
+  @Input() addButton = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,8 +14,8 @@ export class ButtonComponent {
   @Input() text!: string;
   @Input() icon!: string;
   @Input() route!: string;
-  @Input() openModal: boolean = false;
-  @Input() disabled: boolean = false;
+  @Input() openModal = false;
+  @Input() disabled = false;
 
   onClick(event: Event) {
     console.log('Button clicked', event);
