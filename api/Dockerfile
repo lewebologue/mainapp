@@ -1,5 +1,5 @@
 # Utiliser une image Node.js comme base
-FROM node:22-alpine AS builder
+FROM node:22.14-alpine AS builder
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -10,6 +10,10 @@ COPY package*.json ./
 # Installer les dépendances
 RUN npm install
 
+# Générer les fichiers Prisma
+COPY prisma ./prisma
+RUN npx prisma generate
+
 # Copier le reste des fichiers de l'application
 COPY . .
 
@@ -17,7 +21,7 @@ COPY . .
 RUN npm run build
 
 # Étape finale pour exécuter l'application
-FROM node:22-alpine
+FROM node:22.14-alpine
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -26,9 +30,13 @@ WORKDIR /app
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
 
 # Exposer le port utilisé par l'application
 EXPOSE 3000
+
+# Définir la variable d'environnement pour Prisma
+ENV DATABASE_URL=${DATABASE_URL}
 
 # Commande pour démarrer l'application
 CMD ["node", "dist/main"]
