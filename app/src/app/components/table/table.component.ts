@@ -1,32 +1,31 @@
-import { Component } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
-
-export interface PeriodicElement {
-  Client: string;
-  nb_pieces: number;
-  total: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {Client: 'Hydrogen', nb_pieces: 1.0079, total: 'H'},
-  {Client: 'Helium', nb_pieces: 4.0026, total: 'He'},
-  {Client: 'Lithium', nb_pieces: 6.941, total: 'Li'},
-  {Client: 'Beryllium', nb_pieces: 9.0122, total: 'Be'},
-  {Client: 'Boron', nb_pieces: 10.811, total: 'B'},
-  {Client: 'Carbon', nb_pieces: 12.0107, total: 'C'},
-  {Client: 'Nitrogen', nb_pieces: 14.0067, total: 'N'},
-  {Client: 'Oxygen', nb_pieces: 15.9994, total: 'O'},
-  {Client: 'Fluorine', nb_pieces: 18.9984, total: 'F'},
-  {Client: 'Neon', nb_pieces: 20.1797, total: 'Ne'},
-];
+import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, Input, OnChanges, ViewChild, SimpleChanges } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Cakes } from '../../models/cakes.interface';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
-export class TableComponent {
-  displayedColumns: string[] = ['Client', 'nb_pieces', 'total'];
-  dataSource = ELEMENT_DATA;
+export class TableComponent implements AfterViewInit, OnChanges {
+  @Input() displayedColumns: string[] = [];
+  @Input() dataSource: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
+  @Input() title: string = '';
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['dataSource'] && this.dataSource && this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+  }
 }

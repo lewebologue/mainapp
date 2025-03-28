@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { CakesResponse } from '../models/cakes.interface';
+import { Injectable } from '@angular/core';
+import { Cakes } from '../models/cakes.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getCakes(): Observable<CakesResponse> {
-    return this.httpClient.get<CakesResponse>('http://localhost:3000/cake');
+  getCakes(): Observable<Cakes[]> {
+    return this.httpClient.get<Cakes[]>('http://localhost:3000/cake');
   }
 }

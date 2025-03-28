@@ -36,7 +36,7 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3000
 
 # Définir la variable d'environnement pour Prisma
-ENV DATABASE_URL=${DATABASE_URL}
+ENV DATABASE_URL=
 
 # Commande pour démarrer l'application
 CMD ["node", "dist/main"]

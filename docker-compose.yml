@@ -1,11 +1,7 @@
-version: "3.8"
-
 services:
   app:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    container_name: angular-app
+    image: mainat/app:${TAG_FRONT}
+    container_name: MainatApp-frontend
     ports:
       - "80:80"
     networks:
@@ -13,18 +9,12 @@ services:
     restart: unless-stopped
 
   api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    container_name: nestjs-api
+    image: mainat/api:${TAG_BACK}
+    container_name: MainatApp-api
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - DATABASE_USER=${DB_USER:-postgres}
-      - DATABASE_PASSWORD=${DB_PASSWORD:-postgres}
-      - DATABASE_NAME=${DB_NAME:-main_db}
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
     networks:
@@ -33,7 +23,7 @@ services:
 
   db:
     image: postgres:15
-    container_name: postgres-db
+    container_name: MainatApp-db
     ports:
       - "5432:5432"
     environment:
