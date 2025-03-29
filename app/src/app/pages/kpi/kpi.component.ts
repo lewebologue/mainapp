@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-kpi',
   imports: [],
   templateUrl: './kpi.component.html',
-  styleUrl: './kpi.component.scss'
+  styleUrl: './kpi.component.scss',
 })
-export class KpiComponent {
-
-}
+export class KpiComponent {}

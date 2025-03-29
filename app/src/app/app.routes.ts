@@ -4,26 +4,31 @@ import { CakesComponent } from './pages/cakes/cakes.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { KpiComponent } from './pages/kpi/kpi.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: HomepageComponent
-    },
-    {
-        path: 'cakes',
-        component: CakesComponent
-    },
-    {
-        path: 'orders',
-        component: OrdersComponent
-    },
-    {
-        path: 'clients',
-        component: ClientsComponent
-    },
-    {
-        path: 'kpi',
-        component: KpiComponent
-    }
+  {
+    path: '',
+    component: HomepageComponent,
+  },
+  {
+    path: 'cakes',
+    component: CakesComponent,
+  },
+  {
+    path: 'orders',
+    component: OrdersComponent,
+  },
+  {
+    path: 'clients',
+    component: ClientsComponent,
+  },
+  {
+    path: 'kpi',
+    component: KpiComponent,
+  },
+  {
+    path: 'test',
+    component: ModalComponent,
+  },
 ];

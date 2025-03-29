@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-button',
   imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule],
   templateUrl: './button.component.html',
-  styleUrl: './button.component.scss'
+  styleUrl: './button.component.scss',
 })
 export class ButtonComponent {
   @Input() text!: string;

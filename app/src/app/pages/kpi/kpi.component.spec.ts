@@ -8,9 +8,8 @@ describe('KpiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KpiComponent]
-    })
-    .compileComponents();
+      imports: [KpiComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(KpiComponent);
     component = fixture.componentInstance;

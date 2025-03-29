@@ -4,11 +4,10 @@ import { Cakes } from '../models/cakes.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getCakes(): Observable<Cakes[]> {
     return this.httpClient.get<Cakes[]>('http://localhost:3000/cake');

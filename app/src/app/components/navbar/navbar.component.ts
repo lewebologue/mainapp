@@ -6,8 +6,6 @@ import { ButtonComponent } from '../button/button.component';
   selector: 'app-navbar',
   imports: [CommonModule, ButtonComponent],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent {
-
-}
+export class NavbarComponent {}

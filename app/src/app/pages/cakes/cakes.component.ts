@@ -10,7 +10,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
   selector: 'app-cakes',
   imports: [CommonModule, TableComponent, ModalComponent],
   templateUrl: './cakes.component.html',
-  styleUrls: ['./cakes.component.css']
+  styleUrls: ['./cakes.component.css'],
 })
 export class CakesComponent implements OnInit {
   apiData: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);

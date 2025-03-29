@@ -5,8 +5,6 @@ import { TableComponent } from '../../components/table/table.component';
   selector: 'app-homepage',
   imports: [TableComponent],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.scss'
+  styleUrl: './homepage.component.scss',
 })
-export class HomepageComponent {
-
-}
+export class HomepageComponent {}
