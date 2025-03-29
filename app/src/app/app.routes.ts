@@ -4,7 +4,6 @@ import { CakesComponent } from './pages/cakes/cakes.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { KpiComponent } from './pages/kpi/kpi.component';
 import { OrdersComponent } from './pages/orders/orders.component';
-import { ModalComponent } from './components/modal/modal.component';
 
 export const routes: Routes = [
   {
@@ -26,9 +25,5 @@ export const routes: Routes = [
   {
     path: 'kpi',
     component: KpiComponent,
-  },
-  {
-    path: 'test',
-    component: ModalComponent,
   },
 ];
