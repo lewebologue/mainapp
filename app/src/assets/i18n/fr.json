@@ -1,0 +1,11 @@
+{
+  "add": "Ajouter",
+  "name": "Nom",
+  "price": "Prix",
+  "parts": "Nb de parts",
+  "table": {
+    "name": "Nom",
+    "price": "Prix",
+    "parts": "Nb de parts"
+  }
+}
