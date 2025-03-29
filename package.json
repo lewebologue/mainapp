@@ -1,7 +1,0 @@
-{
-  "name": "mainapp-root",
-  "scripts": {
-    "lint:all": "cd api && npm run lint && cd ../app && npm run lint",
-    "lint:fix:all": "cd api && npm run lint:fix && cd ../app && npm run lint:fix"
-  }
-}
