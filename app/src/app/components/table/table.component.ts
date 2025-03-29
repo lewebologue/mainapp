@@ -11,10 +11,17 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Cakes } from '../../models/cakes.interface';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { ButtonComponent } from '../button/button.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-table',
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, ButtonComponent],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    ButtonComponent,
+    TranslateModule,
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })

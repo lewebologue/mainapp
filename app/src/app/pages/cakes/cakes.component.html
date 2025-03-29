@@ -1,11 +1,44 @@
+<div id="addCakeAccordion">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="title"> Ajouter un gâteau </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="add-cake-form">
+        <form [formGroup]="addCakeControlGroup" class="cake-form">
+          <ng-template matStepLabel></ng-template>
+          <mat-form-field>
+            <mat-label>Nom</mat-label>
+            <input matInput placeholder="Nom" formControlName="name" required />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Parts</mat-label>
+            <input
+              matInput
+              placeholder="Nombres de parts"
+              formControlName="parts"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Prix</mat-label>
+            <input
+              matInput
+              placeholder="Prix"
+              formControlName="price"
+              required
+            />
+          </mat-form-field>
+        </form>
+        <div class="button_container">
+          <app-button [text]="'Ajouter'"></app-button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 <app-table
   [dataSource]="apiData"
   [displayedColumns]="['name', 'parts', 'price']"
-  [title]="'Liste des gâteaux'"
-  [addButton]="true"
 >
 </app-table>
-<app-modal [title]="'Ajout d\'un gatal'"></app-modal>
-@if(addCakeModal) {
-<app-modal></app-modal>
-}

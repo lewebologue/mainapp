@@ -1,20 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Cakes } from '../../models/cakes.interface';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from '../../components/table/table.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { ModalComponent } from '../../components/modal/modal.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ButtonComponent } from '../../components/button/button.component';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-cakes',
-  imports: [CommonModule, TableComponent, ModalComponent],
+  imports: [
+    CommonModule,
+    TableComponent,
+    MatExpansionModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ButtonComponent,
+  ],
   templateUrl: './cakes.component.html',
-  styleUrls: ['./cakes.component.css'],
+  styleUrls: ['./cakes.component.scss'],
 })
 export class CakesComponent implements OnInit {
+  #formBuilder = inject(FormBuilder);
   apiData: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
   addCakeModal = false;
+
+  addCakeControlGroup = this.#formBuilder.group({
+    name: ['', Validators.required],
+    parts: [0, Validators.required],
+    price: [0, Validators.required],
+  });
 
   constructor(private cakesService: ApiService) {}
 
