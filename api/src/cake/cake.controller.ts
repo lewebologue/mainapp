@@ -32,7 +32,7 @@ export class CakeController {
   @ApiOperation({ summary: 'Get all cakes' })
   @ApiResponse({ status: 200, description: 'Return all cakes.' })
   findAll() {
-    return this.cakeService.findAll({});
+    return this.cakeService.findAll({ orderBy: { name: 'asc' } });
   }
 
   @Get(':id')

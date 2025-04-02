@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Cakes } from '../../models/cakes.interface';
-import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from '../../components/table/table.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +13,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ButtonComponent } from '../../components/button/button.component';
 import { MatInputModule } from '@angular/material/input';
+import { CakesService } from '../../services/cakes.service';
 
 @Component({
   selector: 'app-cakes',
@@ -31,9 +31,10 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./cakes.component.scss'],
 })
 export class CakesComponent implements OnInit {
+  #cakesService = inject(CakesService);
   #formBuilder = inject(FormBuilder);
+
   apiData: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
-  addCakeModal = false;
 
   addCakeControlGroup = this.#formBuilder.group({
     name: ['', Validators.required],
@@ -41,15 +42,26 @@ export class CakesComponent implements OnInit {
     price: [0, Validators.required],
   });
 
-  constructor(private cakesService: ApiService) {}
-
   ngOnInit(): void {
     this.getAllCakes();
   }
 
   getAllCakes(): void {
-    this.cakesService.getCakes().subscribe((response: Cakes[]) => {
+    this.#cakesService.getCakes().subscribe((response: Cakes[]) => {
       this.apiData = new MatTableDataSource<Cakes>(response);
     });
+  }
+
+  createCake() {
+    if (this.addCakeControlGroup.valid) {
+      const cakeData: Cakes = {
+        name: this.addCakeControlGroup.value.name ?? '',
+        parts: this.addCakeControlGroup.value.parts ?? 0,
+        price: this.addCakeControlGroup.value.price ?? 0,
+      };
+      this.#cakesService
+        .createCake(cakeData)
+        .subscribe(() => this.getAllCakes());
+    }
   }
 }

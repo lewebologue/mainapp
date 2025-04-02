@@ -16,6 +16,7 @@
             <input
               matInput
               placeholder="Nombres de parts"
+              type="number"
               formControlName="parts"
               required
             />
@@ -24,14 +25,20 @@
             <mat-label>Prix</mat-label>
             <input
               matInput
+              type="number"
               placeholder="Prix"
               formControlName="price"
               required
             />
+            <span matTextSuffix>€&nbsp;</span>
           </mat-form-field>
         </form>
         <div class="button_container">
-          <app-button [text]="'Ajouter'"></app-button>
+          <app-button
+            [text]="'Ajouter'"
+            (click)="createCake()"
+            [disabled]="addCakeControlGroup.invalid"
+          ></app-button>
         </div>
       </div>
     </mat-expansion-panel>
