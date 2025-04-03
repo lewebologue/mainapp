@@ -5,7 +5,7 @@ import {
   Input,
   OnChanges,
   ViewChild,
-  SimpleChanges,
+  SimpleChanges, Output, EventEmitter,
 } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Cakes } from '../../models/cakes.interface';
@@ -31,6 +31,8 @@ export class TableComponent implements AfterViewInit, OnChanges {
     new MatTableDataSource<Cakes>([]);
   @Input() title = '';
   @Input() addButton = false;
+  @Output() editButtonClick = new EventEmitter<string>();
+  @Output() deleteButtonClick = new EventEmitter<string>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -53,10 +55,10 @@ export class TableComponent implements AfterViewInit, OnChanges {
   }
 
   onEdit(id: string) {
-    console.log('Edit', id);
+    this.editButtonClick.emit(id);
   }
 
   onDelete(id: string) {
-    console.log('Delete', id);
+    this.deleteButtonClick.emit(id);
   }
 }

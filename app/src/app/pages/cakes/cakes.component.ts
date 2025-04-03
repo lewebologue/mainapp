@@ -64,4 +64,12 @@ export class CakesComponent implements OnInit {
         .subscribe(() => this.getAllCakes());
     }
   }
+
+  deleteCake(id: string) {
+    console.log('Delete ID received', id);
+  }
+
+  editCake(id: string) {
+    console.log('Edit ID received', id);
+  }
 }

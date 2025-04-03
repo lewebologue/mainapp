@@ -47,5 +47,7 @@
 <app-table
   [dataSource]="apiData"
   [displayedColumns]="['name', 'parts', 'price']"
+  (deleteButtonClick)="deleteCake($event)"
+  (editButtonClick)="editCake($event)"
 >
 </app-table>
