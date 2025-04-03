@@ -5,7 +5,9 @@ import {
   Input,
   OnChanges,
   ViewChild,
-  SimpleChanges, Output, EventEmitter,
+  SimpleChanges,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Cakes } from '../../models/cakes.interface';
