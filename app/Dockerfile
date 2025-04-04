@@ -1,19 +1,19 @@
 FROM node:22-alpine
 
-RUN npm install -g @angular/cli
+ENV CI=TRUE
 
-WORKDIR /mainapp
-
-COPY package*.json ./
-
-RUN npm install
+WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm run build
+RUN npm ci --cache .npm --prefer-offline --loglevel=error
 
-RUN npm install -g http-server
+RUN npm run build:prod
 
-CMD http-server dist/app -p 4200
+FROM nginx:1.23-alpine
 
-EXPOSE 4200
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=build /usr/src/app/dist/browser /usr/share/nginx/html
+
+CMD ["/bin/sh",  "-c",  "exec nginx -g 'daemon off;'"]
