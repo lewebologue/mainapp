@@ -1,19 +1,35 @@
-FROM node:22-alpine
+# Étape 1 : Construire l'application Angular
+FROM node:22 AS build
 
-ENV CI=TRUE
-
+# Définir le répertoire de travail
 WORKDIR /usr/src/app
 
+# Copier les fichiers package.json et package-lock.json pour installer les dépendances
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste des fichiers du projet
 COPY . .
 
-RUN npm ci --cache .npm --prefer-offline --loglevel=error
+# Construire l'application Angular
+RUN npm run build --prod
 
-RUN npm run build:prod
+# Étape 2 : Exécuter l'application Angular
+FROM node:22
 
-FROM nginx:1.23-alpine
+# Définir le répertoire de travail
+WORKDIR /usr/src/app
 
-RUN rm -rf /usr/share/nginx/html/*
+# Copier les fichiers construits depuis l'étape précédente
+COPY --from=build /usr/src/app/dist/app/browser /usr/src/app/dist
 
-COPY --from=build /usr/src/app/dist/browser /usr/share/nginx/html
+# Installer un serveur HTTP simple pour servir les fichiers Angular
+RUN npm install -g http-server
 
-CMD ["/bin/sh",  "-c",  "exec nginx -g 'daemon off;'"]
+# Exposer le port 8080
+EXPOSE 8080
+
+# Commande pour démarrer le serveur HTTP
+CMD ["http-server", "dist", "-p", "8080"]
