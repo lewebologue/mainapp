@@ -14,6 +14,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ButtonComponent } from '../../components/button/button.component';
 import { MatInputModule } from '@angular/material/input';
 import { CakesService } from '../../services/cakes.service';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cakes',
@@ -26,6 +28,7 @@ import { CakesService } from '../../services/cakes.service';
     FormsModule,
     ReactiveFormsModule,
     ButtonComponent,
+    ModalComponent,
   ],
   templateUrl: './cakes.component.html',
   styleUrls: ['./cakes.component.scss'],
@@ -33,13 +36,21 @@ import { CakesService } from '../../services/cakes.service';
 export class CakesComponent implements OnInit {
   #cakesService = inject(CakesService);
   #formBuilder = inject(FormBuilder);
+  #toastr = inject(ToastrService);
 
   apiData: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
+  displayModal = false;
 
   addCakeControlGroup = this.#formBuilder.group({
     name: ['', Validators.required],
     parts: [0, Validators.required],
     price: [0, Validators.required],
+  });
+
+  editCakeControlGroup = this.#formBuilder.group({
+    name: [''],
+    parts: [0],
+    price: [0],
   });
 
   ngOnInit(): void {
@@ -66,10 +77,14 @@ export class CakesComponent implements OnInit {
   }
 
   deleteCake(id: string) {
-    console.log('Delete ID received', id);
+    this.#cakesService.deleteCake(id).subscribe(() => {
+      this.#toastr.success('Gâteau supprimé');
+      this.getAllCakes();
+    });
   }
 
   editCake(id: string) {
+    this.displayModal = true;
     console.log('Edit ID received', id);
   }
 }

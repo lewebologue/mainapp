@@ -6,7 +6,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNativeDateAdapter } from '@angular/material/core';
-
+import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -19,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(),
     provideNativeDateAdapter(),
+    provideToastr(),
     importProvidersFrom(
       TranslateModule.forRoot({
         defaultLanguage: 'fr',

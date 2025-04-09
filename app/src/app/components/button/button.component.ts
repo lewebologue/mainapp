@@ -18,10 +18,8 @@ export class ButtonComponent {
   @Input() disabled = false;
 
   onClick(event: Event) {
-    console.log('Button clicked', event);
     if (this.openModal) {
       event.stopPropagation();
-      console.log('Modal button clicked', event);
     }
   }
 }

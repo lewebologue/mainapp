@@ -30,14 +30,20 @@
   }
   .edit-icon {
     color: orange;
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
   }
   .delete-icon {
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
     color: red;
+  }
+  .done-icon {
+    color: green;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

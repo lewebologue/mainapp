@@ -16,11 +16,14 @@ export class CakesService {
     return this.httpClient.post<Cakes>('http://localhost:3000/cake', cakeData);
   }
 
-  deleteCake(id: number): Observable<Cakes> {
+  deleteCake(id: string): Observable<Cakes> {
     return this.httpClient.delete<Cakes>(`http://localhost:3000/cake/${id}`);
   }
 
   updateCake(cakeData: Cakes): Observable<Cakes> {
-    return this.httpClient.put<Cakes>(`http://localhost:3000/cake/${cakeData.id}`, cakeData);
+    return this.httpClient.put<Cakes>(
+      `http://localhost:3000/cake/${cakeData.id}`,
+      cakeData,
+    );
   }
 }

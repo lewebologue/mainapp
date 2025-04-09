@@ -14,6 +14,7 @@ import { Cakes } from '../../models/cakes.interface';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { ButtonComponent } from '../button/button.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-table',
@@ -23,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatPaginatorModule,
     ButtonComponent,
     MatIconModule,
+    MatInputModule,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -37,6 +39,8 @@ export class TableComponent implements AfterViewInit, OnChanges {
   @Output() deleteButtonClick = new EventEmitter<string>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  editMode = false;
 
   cakesTableEnum: Record<string, string> = {
     name: 'Nom',
@@ -57,10 +61,16 @@ export class TableComponent implements AfterViewInit, OnChanges {
   }
 
   onEdit(id: string) {
-    this.editButtonClick.emit(id);
+    console.log('Edit button clicked for ID:', id);
+    this.editMode = true;
+    // this.editButtonClick.emit(id);
   }
 
   onDelete(id: string) {
     this.deleteButtonClick.emit(id);
+  }
+
+  onValid() {
+    this.editMode = false;
   }
 }

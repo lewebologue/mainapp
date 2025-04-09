@@ -6,7 +6,3 @@ export interface Cakes {
   createdAt?: Date;
   updatedAt?: Date;
 }
-
-export interface CakesResponse {
-  cakes: Cakes[];
-}
