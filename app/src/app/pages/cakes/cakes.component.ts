@@ -9,13 +9,14 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  FormGroup,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ButtonComponent } from '../../components/button/button.component';
 import { MatInputModule } from '@angular/material/input';
 import { CakesService } from '../../services/cakes.service';
-import { ModalComponent } from '../../components/modal/modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-cakes',
@@ -28,7 +29,6 @@ import { ToastrService } from 'ngx-toastr';
     FormsModule,
     ReactiveFormsModule,
     ButtonComponent,
-    ModalComponent,
   ],
   templateUrl: './cakes.component.html',
   styleUrls: ['./cakes.component.scss'],
@@ -83,8 +83,24 @@ export class CakesComponent implements OnInit {
     });
   }
 
-  editCake(id: string) {
-    this.displayModal = true;
-    console.log('Edit ID received', id);
+  editCake(data: FormGroup) {
+    const editCakeData: Cakes = {
+      name: data.value.name,
+      parts: parseInt(data.value.parts),
+      price: parseInt(data.value.price),
+    };
+    this.#cakesService
+      .updateCake(data.value.id, editCakeData)
+      .pipe(
+        catchError((error) => {
+          this.#toastr.error('Erreur lors de la modification du gâtal');
+          console.error('Erreur:', error);
+          return of([]);
+        }),
+      )
+      .subscribe(() => {
+        this.#toastr.success('Gâteau Modifié');
+        this.getAllCakes();
+      });
   }
 }

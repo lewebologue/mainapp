@@ -1,6 +1,3 @@
-@if (displayModal){
-  <app-modal [modalType]="'editCake'"></app-modal>
-}
 <div id="addCakeAccordion">
   <mat-accordion>
     <mat-expansion-panel>
@@ -49,6 +46,7 @@
 </div>
 <app-table
   [dataSource]="apiData"
+  [formGroup]="editCakeControlGroup"
   [displayedColumns]="['name', 'parts', 'price']"
   (deleteButtonClick)="deleteCake($event)"
   (editButtonClick)="editCake($event)"
