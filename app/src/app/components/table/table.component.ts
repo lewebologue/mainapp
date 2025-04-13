@@ -10,7 +10,6 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Cakes } from '../../models/cakes.interface';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { ButtonComponent } from '../button/button.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,10 +30,9 @@ import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
-export class TableComponent implements AfterViewInit, OnChanges {
+export class TableComponent<T> implements AfterViewInit, OnChanges {
   @Input() displayedColumns: string[] = [];
-  @Input() dataSource: MatTableDataSource<Cakes> =
-    new MatTableDataSource<Cakes>([]);
+  @Input() dataSource: MatTableDataSource<T> = new MatTableDataSource<T>([]);
   @Input() title = '';
   @Input() addButton = false;
   @Input() formGroup!: FormGroup;
@@ -46,10 +44,13 @@ export class TableComponent implements AfterViewInit, OnChanges {
   editMode = false;
   editModeID: string | null = null;
 
-  cakesTableEnum: Record<string, string> = {
+  tableEnum: Record<string, string> = {
     name: 'Nom',
-    parts: 'Parts',
     price: 'Prix',
+    parts: 'Nb de parts',
+    lastname: 'Nom ',
+    firstname: 'Prénom',
+    phone: 'Téléphone',
   };
 
   ngAfterViewInit() {
@@ -75,7 +76,8 @@ export class TableComponent implements AfterViewInit, OnChanges {
   onEdit(id: string) {
     this.editModeID = id;
     this.editMode = true;
-    const element = this.dataSource.data.find((item) => item.id === id);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const element = this.dataSource.data.find((item: any) => item.id === id);
     if (element) {
       this.formGroup.addControl('id', new FormControl(id));
       this.formGroup.patchValue(element);

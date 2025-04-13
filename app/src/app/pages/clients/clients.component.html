@@ -1,1 +1,69 @@
-<p>clients works!</p>
+<div id="addCakeAccordion">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="title"> Ajouter un client </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="add-cake-form">
+        <form [formGroup]="customerControlGroup" class="cake-form">
+          <ng-template matStepLabel></ng-template>
+          <mat-form-field>
+            <mat-label>Nom</mat-label>
+            <input
+              matInput
+              placeholder="Nom"
+              formControlName="lastname"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Prénom</mat-label>
+            <input
+              matInput
+              placeholder="Prénom"
+              formControlName="firstname"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Téléphone</mat-label>
+            <input
+              matInput
+              type="phone"
+              placeholder="Téléphone"
+              formControlName="phone"
+              maxlength="10"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="mail"
+              placeholder="Email"
+              formControlName="email"
+              maxlength=""
+              required
+            />
+          </mat-form-field>
+        </form>
+        <div class="button_container">
+          <app-button
+            [text]="'Ajouter'"
+            (click)="createCustomer()"
+            [disabled]="customerControlGroup.invalid"
+          ></app-button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<app-table
+  [dataSource]="clientsData"
+  [formGroup]="customerControlGroup"
+  [displayedColumns]="['firstname', 'lastname', 'phone']"
+  (deleteButtonClick)="deleteClient($event)"
+  (editButtonClick)="editCustomer($event)"
+>
+</app-table>

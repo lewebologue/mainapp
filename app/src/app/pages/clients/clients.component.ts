@@ -1,15 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
 import { Customers } from '../../models/customers.interface';
 import { ClientsService } from '../../services/clients.service';
+import { TableComponent } from '../../components/table/table.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ButtonComponent } from '../../components/button/button.component';
 
 @Component({
   selector: 'app-clients',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    TableComponent,
+    MatExpansionModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ButtonComponent,
+  ],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss',
 })
@@ -26,7 +46,6 @@ export class ClientsComponent implements OnInit {
     firstname: ['', Validators.required],
     email: ['', Validators.required],
     phone: ['', Validators.required],
-    address: ['', Validators.required],
   });
 
   ngOnInit(): void {
@@ -46,7 +65,6 @@ export class ClientsComponent implements OnInit {
         firstname: this.customerControlGroup.value.firstname ?? '',
         email: this.customerControlGroup.value.email ?? '',
         phone: this.customerControlGroup.value.phone ?? '',
-        address: this.customerControlGroup.value.address ?? '',
       };
       this.#customerService
         .createCustomer(customerData)
@@ -56,31 +74,30 @@ export class ClientsComponent implements OnInit {
 
   editCustomer(data: FormGroup) {
     const editCustomerData: Customers = {
-      lastname: this.customerControlGroup.value.lastname ?? '',
-      firstname: this.customerControlGroup.value.firstname ?? '',
-      email: this.customerControlGroup.value.email ?? '',
-      phone: this.customerControlGroup.value.phone ?? '',
-      address: this.customerControlGroup.value.address ?? '',
+      lastname: data.value.lastname ?? '',
+      firstname: data.value.firstname ?? '',
+      email: data.value.email ?? '',
+      phone: data.value.phone ?? '',
       updatedAt: new Date(),
     };
     this.#customerService
-      .updateCake(data.value.id, editCustomerData)
+      .updateCustomer(data.value.id, editCustomerData)
       .pipe(
         catchError((error) => {
-          this.#toastr.error('Erreur lors de la modification du gâtal');
+          this.#toastr.error('Erreur lors de la modification du client');
           console.error('Erreur:', error);
           return of([]);
         }),
       )
       .subscribe(() => {
-        this.#toastr.success('Gâteau Modifié');
+        this.#toastr.success('Client Modifié');
         this.getAllCustomers();
       });
   }
 
-  deleteCake(id: string) {
+  deleteClient(id: string) {
     this.#customerService.deleteCustomer(id).subscribe(() => {
-      this.#toastr.success('Gâteau supprimé');
+      this.#toastr.success('Client supprimé');
       this.getAllCustomers();
     });
   }

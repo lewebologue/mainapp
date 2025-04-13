@@ -24,10 +24,10 @@ export class ClientsService {
     );
   }
 
-  updateCake(id: string, cakeData: Customers): Observable<Customers> {
-    return this.httpClient.put<Customers>(
-      `${this.#apiBaseUrl}/cake/${id}`,
-      cakeData,
+  updateCustomer(id: string, data: Customers): Observable<Customers> {
+    return this.httpClient.patch<Customers>(
+      `${this.#apiBaseUrl}/customer/${id}`,
+      data,
     );
   }
 

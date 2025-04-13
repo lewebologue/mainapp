@@ -1,0 +1,16 @@
+#addCakeAccordion {
+    margin: 0rem 4rem;
+    .title {
+      color: #1714a3;
+    }
+    .add-cake-form {
+      display: flex;
+      justify-content: space-between;
+    }
+    .cake-form {
+      width: 80%;
+      display: flex;
+      gap: 1rem;
+    }
+  }
+  

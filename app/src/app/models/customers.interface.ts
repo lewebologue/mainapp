@@ -4,7 +4,7 @@ export interface Customers {
   firstname: string;
   email: string;
   phone: string;
-  address: string;
+  address?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
