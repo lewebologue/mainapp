@@ -30,4 +30,8 @@ export class ClientsService {
       cakeData,
     );
   }
+
+  createCustomer(customerData: Customers) {
+    return this.httpClient.post(`${this.#apiBaseUrl}/customer`, customerData);
+  }
 }

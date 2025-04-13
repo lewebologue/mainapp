@@ -39,7 +39,6 @@ export class CakesComponent implements OnInit {
   #toastr = inject(ToastrService);
 
   apiData: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
-  displayModal = false;
 
   addCakeControlGroup = this.#formBuilder.group({
     name: ['', Validators.required],
