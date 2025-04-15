@@ -1,1 +1,47 @@
-<p>orders works!</p>
+<div id="orders-container">
+  <div class="button-container">
+    <app-button
+      [text]="'Nouvelle Commande'"
+      [icon]="'add_box'"
+      [route]="'/add-orders'"
+    ></app-button>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="Commandes du jour">
+      @if (todayOrders.filteredData.length === 0) {
+        <h2 class="orders-table">Pas de commande aujourd'hui</h2>
+      } @else {
+        <app-table
+          [dataSource]="todayOrders"
+          [displayedColumns]="[
+            'firstname',
+            'lastname',
+            'Withdrawal_date',
+            'total',
+          ]"
+          (deleteButtonClick)="deleteOrder()"
+          (editButtonClick)="editOrder()"
+        >
+        </app-table>
+      }
+    </mat-tab>
+    <mat-tab label="Toutes les commandes">
+      @if (allOrders.filteredData.length === 0) {
+        <h2 class="orders-table">Pas de commande</h2>
+      } @else {
+        <app-table
+          [dataSource]="todayOrders"
+          [displayedColumns]="[
+            'firstname',
+            'lastname',
+            'Withdrawal_date',
+            'total',
+          ]"
+          (deleteButtonClick)="deleteOrder()"
+          (editButtonClick)="editOrder()"
+        >
+        </app-table>
+      }
+    </mat-tab>
+  </mat-tab-group>
+</div>
