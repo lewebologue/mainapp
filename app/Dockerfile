@@ -13,6 +13,9 @@ RUN npm install
 # Copier le reste des fichiers du projet
 COPY . .
 
+# Remplacer le fichier environment.ts par celui situé dans /etc/secrets
+COPY /etc/secrets/environment.ts ./src/environments/environment.ts
+
 # Construire l'application Angular
 RUN npm run build --prod
 
