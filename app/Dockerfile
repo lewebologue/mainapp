@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Construire l'application Angular
-RUN npm run build --prod
+RUN npm run build:prod
 
 # Étape 2 : Exécuter l'application Angular
 FROM node:22
