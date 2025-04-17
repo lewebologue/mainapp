@@ -31,5 +31,5 @@ RUN npm install -g http-server
 # Exposer le port 8080
 EXPOSE 8080
 
-# Commande pour démarrer le serveur HTTP
-CMD ["http-server", "dist", "-p", "8080"]
+# Commande pour démarrer le serveur HTTP avec redirection vers index.html
+CMD ["http-server", "dist", "-p", "8080", "-P", "http://0.0.0.0:8080?"]
