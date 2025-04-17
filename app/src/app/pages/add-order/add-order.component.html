@@ -3,13 +3,18 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Choix du client</ng-template>
       <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          placeholder="Last name, First name"
+        <mat-label>Choix du client</mat-label>
+        <mat-select
+          class="select"
+          [placeholder]="'Choix du client'"
           formControlName="firstCtrl"
-          required
-        />
+        >
+          @for (client of clients; track client) {
+            <mat-option [value]="client.lastname">{{
+              client.lastname
+            }}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
       <div>
         <button mat-button matStepperNext>Next</button>
@@ -17,18 +22,21 @@
     </form>
   </mat-step>
   <!-- #docregion label -->
-  <mat-step [stepControl]="secondFormGroup" label="Choix du client">
+  <mat-step [stepControl]="secondFormGroup" label="Commande">
     <!-- #enddocregion label -->
     <form [formGroup]="secondFormGroup">
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input
-          matInput
-          formControlName="secondCtrl"
-          placeholder="Ex. 1 Main St, New York, NY"
-          required
-        />
-      </mat-form-field>
+      <mat-selection-list
+        #cakeList
+        [formControl]="cakeControl"
+        name="cakes"
+        [multiple]="true"
+      >
+        @for (cake of cakes; track cake) {
+          <mat-list-option [value]="cake.id"
+            >{{ cake.name }} - {{ cake.parts }} parts</mat-list-option
+          >
+        }
+      </mat-selection-list>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
@@ -38,7 +46,10 @@
   <mat-step>
     <ng-template matStepLabel>Terminé</ng-template>
     <p>Commande ajoutée</p>
-    <app-button [text]="'Retour aux commandes'" [route]="'orders'"></app-button>
+    <app-button
+      [text]="'Retour aux commandes'"
+      [route]="'/orders'"
+    ></app-button>
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>
