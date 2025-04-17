@@ -2,14 +2,19 @@
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Choix du client</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
+      <mat-form-field class="example-full-width">
+        <mat-label>Assignee</mat-label>
         <input
+          type="text"
           matInput
-          placeholder="Last name, First name"
-          formControlName="firstCtrl"
-          required
+          [formControl]="myControl"
+          [matAutocomplete]="auto"
         />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          @for (client of clients | async; track clients) {
+            <mat-option [value]="client.id">{{ client.lastname }} {{ client.firstname }}</mat-option>
+          }
+        </mat-autocomplete>
       </mat-form-field>
       <div>
         <button mat-button matStepperNext>Next</button>
@@ -17,18 +22,20 @@
     </form>
   </mat-step>
   <!-- #docregion label -->
-  <mat-step [stepControl]="secondFormGroup" label="Choix du client">
-    <!-- #enddocregion label -->
+  <mat-step [stepControl]="secondFormGroup" label="Commande">
     <form [formGroup]="secondFormGroup">
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input
-          matInput
-          formControlName="secondCtrl"
-          placeholder="Ex. 1 Main St, New York, NY"
-          required
-        />
-      </mat-form-field>
+      <mat-selection-list
+        #cakeList
+        [formControl]="cakeControl"
+        name="cakes"
+        [multiple]="true"
+      >
+        @for (cake of cakes; track cake) {
+          <mat-list-option [value]="cake.id"
+            >{{ cake.name }} - {{ cake.parts }} parts</mat-list-option
+          >
+        }
+      </mat-selection-list>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
@@ -38,7 +45,10 @@
   <mat-step>
     <ng-template matStepLabel>Terminé</ng-template>
     <p>Commande ajoutée</p>
-    <app-button [text]="'Retour aux commandes'" [route]="'orders'"></app-button>
+    <app-button
+      [text]="'Retour aux commandes'"
+      [route]="'/orders'"
+    ></app-button>
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>
