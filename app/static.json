@@ -1,5 +1,5 @@
 {
-  "root": "dist/app/browser",
+  "root": "dist/app",
   "routes": {
     "/**": "index.html"
   }
