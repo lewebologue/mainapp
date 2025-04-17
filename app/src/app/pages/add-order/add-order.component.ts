@@ -19,6 +19,8 @@ import { CakesService } from '../../services/cakes.service';
 import { ClientsService } from '../../services/clients.service';
 // import { OrdersService } from '../../services/orders.service';
 import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-order',
@@ -32,6 +34,7 @@ import { MatListModule } from '@angular/material/list';
     ButtonComponent,
     MatSelectModule,
     MatListModule,
+    MatAutocompleteModule,
   ],
   templateUrl: './add-order.component.html',
   styleUrl: './add-order.component.scss',
@@ -48,6 +51,7 @@ export class AddOrderComponent implements OnInit {
   // #orderService = inject(OrdersService);
 
   clients!: Customers[];
+  filteredClient!: Observable<Customers[]>;
   selectedClient!: Customers;
   cakes!: Cakes[];
 
@@ -61,6 +65,13 @@ export class AddOrderComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCakes();
     this.getAllCustomers();
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.lastname;
+        return name ? this._filter(name as string) : this.options.slice();
+      }),
+    );
   }
 
   getAllCustomers() {

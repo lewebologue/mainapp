@@ -2,19 +2,19 @@
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Choix du client</ng-template>
-      <mat-form-field>
-        <mat-label>Choix du client</mat-label>
-        <mat-select
-          class="select"
-          [placeholder]="'Choix du client'"
-          formControlName="firstCtrl"
-        >
-          @for (client of clients; track client) {
-            <mat-option [value]="client.lastname">{{
-              client.lastname
-            }}</mat-option>
+      <mat-form-field class="example-full-width">
+        <mat-label>Assignee</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="myControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          @for (client of clients | async; track clients) {
+            <mat-option [value]="client.id">{{ client.lastname }} {{ client.firstname }}</mat-option>
           }
-        </mat-select>
+        </mat-autocomplete>
       </mat-form-field>
       <div>
         <button mat-button matStepperNext>Next</button>
@@ -23,7 +23,6 @@
   </mat-step>
   <!-- #docregion label -->
   <mat-step [stepControl]="secondFormGroup" label="Commande">
-    <!-- #enddocregion label -->
     <form [formGroup]="secondFormGroup">
       <mat-selection-list
         #cakeList
