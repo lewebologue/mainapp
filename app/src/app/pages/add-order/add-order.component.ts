@@ -20,7 +20,9 @@ import { ClientsService } from '../../services/clients.service';
 // import { OrdersService } from '../../services/orders.service';
 import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
+import { TableComponent } from '../../components/table/table.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-add-order',
@@ -35,6 +37,7 @@ import { Observable } from 'rxjs';
     MatSelectModule,
     MatListModule,
     MatAutocompleteModule,
+    TableComponent,
   ],
   templateUrl: './add-order.component.html',
   styleUrl: './add-order.component.scss',
@@ -51,27 +54,39 @@ export class AddOrderComponent implements OnInit {
   // #orderService = inject(OrdersService);
 
   clients!: Customers[];
-  filteredClient!: Observable<Customers[]>;
-  selectedClient!: Customers;
-  cakes!: Cakes[];
+  cakes: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
 
   firstFormGroup = this.#formBuilder.group({
-    firstCtrl: ['', Validators.required],
+    clientControl: ['', Validators.required],
   });
   secondFormGroup!: FormGroup;
   isLinear = true;
   cakeControl = new FormControl();
+  filteredOptions!: Observable<Customers[]>;
 
   ngOnInit(): void {
     this.getAllCakes();
     this.getAllCustomers();
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.cakeControl.valueChanges.pipe(
       startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.lastname;
-        return name ? this._filter(name as string) : this.options.slice();
-      }),
+      map((value) => (typeof value === 'string' ? value : '')),
+      map((name) => (name ? this._filter(name) : this.clients.slice())),
     );
+  }
+
+  private _filter(value: string): Customers[] {
+    const filterValue = value.toLowerCase();
+    return this.clients.filter(
+      (client) =>
+        client.lastname.toLowerCase().includes(filterValue) ||
+        client.firstname.toLowerCase().includes(filterValue),
+    );
+  }
+
+  displayClient(clientId: string | number): string {
+    if (!clientId) return '';
+    const client = this.clients.find((c) => c.id === clientId);
+    return client ? `${client.lastname} ${client.firstname}` : '';
   }
 
   getAllCustomers() {
@@ -80,13 +95,18 @@ export class AddOrderComponent implements OnInit {
     });
   }
 
-  getAllCakes() {
+  getAllCakes(): void {
     this.#cakesService.getCakes().subscribe((response: Cakes[]) => {
-      this.cakes = response;
+      this.cakes = new MatTableDataSource<Cakes>(response);
     });
   }
 
   createOrder() {
+    const order = {
+      client: this.firstFormGroup.get('clientControl')?.value,
+      cake: this.cakeControl.value,
+    };
+    console.log(order);
     //TODO
   }
 }

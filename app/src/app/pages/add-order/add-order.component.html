@@ -3,27 +3,41 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Choix du client</ng-template>
       <mat-form-field class="example-full-width">
-        <mat-label>Assignee</mat-label>
+        <mat-label>Choix du client</mat-label>
         <input
           type="text"
+          placeholder="Recherche"
+          aria-label="Choix du client"
           matInput
-          [formControl]="myControl"
+          [formControl]="firstFormGroup.controls.clientControl"
           [matAutocomplete]="auto"
         />
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          @for (client of clients | async; track clients) {
-            <mat-option [value]="client.id">{{ client.lastname }} {{ client.firstname }}</mat-option>
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayClient.bind(this)"
+        >
+          @for (option of clients; track option) {
+            <mat-option [value]="option.id"
+              >{{ option.lastname }} {{ option.firstname }}</mat-option
+            >
           }
         </mat-autocomplete>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button
+          mat-button
+          matStepperNext
+          [disabled]="firstFormGroup.invalid"
+          (click)="createOrder()"
+        >
+          Suivant
+        </button>
       </div>
     </form>
   </mat-step>
   <!-- #docregion label -->
   <mat-step [stepControl]="secondFormGroup" label="Commande">
-    <form [formGroup]="secondFormGroup">
+    <!-- <form [formGroup]="secondFormGroup">
       <mat-selection-list
         #cakeList
         [formControl]="cakeControl"
@@ -32,15 +46,30 @@
       >
         @for (cake of cakes; track cake) {
           <mat-list-option [value]="cake.id"
-            >{{ cake.name }} - {{ cake.parts }} parts</mat-list-option
+            >{{ cake.name }} - {{ cake.parts }} parts -
+            {{ cake.price }} €</mat-list-option
           >
         }
       </mat-selection-list>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button
+          mat-button
+          matStepperNext
+          (click)="createOrder()"
+          [disabled]="secondFormGroup.invalid"
+        >
+          Next
+        </button>
       </div>
-    </form>
+    </form> -->
+    <app-table
+      [dataSource]="cakes"
+      [formGroup]="secondFormGroup"
+      [displayedColumns]="['name', 'parts', 'price']"
+      [orderTable]="true"
+    >
+    </app-table>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Terminé</ng-template>

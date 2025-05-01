@@ -36,8 +36,10 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   @Input() title = '';
   @Input() addButton = false;
   @Input() formGroup!: FormGroup;
+  @Input() orderTable = false;
   @Output() editButtonClick = new EventEmitter<FormGroup>();
   @Output() deleteButtonClick = new EventEmitter<string>();
+  @Output() addButtonClick = new EventEmitter<string>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -97,5 +99,11 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   onClose() {
     this.editMode = false;
     this.editModeID = null;
+  }
+
+  addCakeToOrder(id: string) {
+    const cakeOrder: string[] = [];
+    cakeOrder.push(id);
+    console.log(cakeOrder);
   }
 }
