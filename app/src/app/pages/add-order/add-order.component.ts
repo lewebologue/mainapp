@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -18,11 +24,13 @@ import { Customers } from '../../models/customers.interface';
 import { CakesService } from '../../services/cakes.service';
 import { ClientsService } from '../../services/clients.service';
 // import { OrdersService } from '../../services/orders.service';
-import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { map, Observable, startWith } from 'rxjs';
-import { TableComponent } from '../../components/table/table.component';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-add-order',
@@ -37,17 +45,22 @@ import { MatTableDataSource } from '@angular/material/table';
     MatSelectModule,
     MatListModule,
     MatAutocompleteModule,
-    TableComponent,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './add-order.component.html',
   styleUrl: './add-order.component.scss',
 })
-export class AddOrderComponent implements OnInit {
+export class AddOrderComponent implements OnInit, AfterViewInit {
   constructor() {
     this.secondFormGroup = new FormGroup({
       cakes: this.cakeControl,
     });
   }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   #formBuilder = inject(FormBuilder);
   #clientService = inject(ClientsService);
   #cakesService = inject(CakesService);
@@ -55,6 +68,7 @@ export class AddOrderComponent implements OnInit {
 
   clients!: Customers[];
   cakes: MatTableDataSource<Cakes> = new MatTableDataSource<Cakes>([]);
+  displayedColumns: string[] = ['name', 'parts', 'price'];
 
   firstFormGroup = this.#formBuilder.group({
     clientControl: ['', Validators.required],
@@ -64,7 +78,16 @@ export class AddOrderComponent implements OnInit {
   cakeControl = new FormControl();
   filteredOptions!: Observable<Customers[]>;
 
+  tableEnum: Record<string, string> = {
+    name: 'Nom',
+    price: 'Prix',
+    parts: 'Nb de parts',
+  };
+
+  orderedCakes: string[] = [];
+
   ngOnInit(): void {
+    this.cakes.paginator = this.paginator;
     this.getAllCakes();
     this.getAllCustomers();
     this.filteredOptions = this.cakeControl.valueChanges.pipe(
@@ -72,6 +95,10 @@ export class AddOrderComponent implements OnInit {
       map((value) => (typeof value === 'string' ? value : '')),
       map((name) => (name ? this._filter(name) : this.clients.slice())),
     );
+  }
+
+  ngAfterViewInit(): void {
+    this.cakes.paginator = this.paginator;
   }
 
   private _filter(value: string): Customers[] {
@@ -98,6 +125,9 @@ export class AddOrderComponent implements OnInit {
   getAllCakes(): void {
     this.#cakesService.getCakes().subscribe((response: Cakes[]) => {
       this.cakes = new MatTableDataSource<Cakes>(response);
+      if (this.paginator) {
+        this.cakes.paginator = this.paginator;
+      }
     });
   }
 
@@ -108,5 +138,14 @@ export class AddOrderComponent implements OnInit {
     };
     console.log(order);
     //TODO
+  }
+
+  addToOrder(id: string) {
+    this.orderedCakes.push(id);
+    console.log(this.orderedCakes);
+  }
+  removeFromOrder(id: string) {
+    this.orderedCakes = this.orderedCakes.filter((cakeId) => cakeId !== id);
+    console.log(this.orderedCakes);
   }
 }
