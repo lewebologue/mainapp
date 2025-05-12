@@ -101,14 +101,13 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Récapitulatif</ng-template>
-    <p>Commande ajoutée</p>
     <app-button
       [text]="'Retour aux commandes'"
       [route]="'/orders'"
     ></app-button>
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
+      <button mat-button matStepperNext (click)="createOrder()">Next</button>
     </div>
   </mat-step>
   <mat-step>

@@ -71,7 +71,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['name', 'parts', 'price'];
 
   firstFormGroup = this.#formBuilder.group({
-    clientControl: ['', Validators.required],
+    clientControl: [[''], Validators.required],
   });
   secondFormGroup!: FormGroup;
   isLinear = true;
