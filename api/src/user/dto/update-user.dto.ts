@@ -8,4 +8,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   Role?: Role;
   createdAt?: Date;
   updatedAt?: Date;
+  password?: string;
 }
