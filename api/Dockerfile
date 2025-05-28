@@ -38,6 +38,7 @@ EXPOSE 3000
 # Définir la variable d'environnement pour Prisma
 ENV DATABASE_URL=
 ENV PROD_FRONT=
+ENV JWT_SECRET=
 
 # Commande pour démarrer l'application
 CMD ["node", "dist/main"]

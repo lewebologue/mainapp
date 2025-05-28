@@ -5,8 +5,17 @@ import { OrderModule } from './order/order.module';
 import { KpiModule } from './kpi/kpi.module';
 import { CustomerModule } from './customer/customer.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, CakeModule, OrderModule, KpiModule, CustomerModule, AuthenticationModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    UserModule,
+    CakeModule,
+    OrderModule,
+    KpiModule,
+    CustomerModule,
+    AuthenticationModule,
+  ],
 })
 export class AppModule {}
