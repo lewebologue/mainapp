@@ -7,11 +7,20 @@ import { Cakes } from '../../models/cakes.interface';
 import { ButtonComponent } from '../../components/button/button.component';
 import {
   MatAutocomplete,
+  MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle,
+} from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-new-order',
@@ -26,6 +35,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     MatOption,
     ReactiveFormsModule,
     MatFormField,
+    MatCard,
+    MatCardHeader,
+    MatCardActions,
+    MatButton,
+    MatCardSubtitle,
+    MatCardTitle,
   ],
   templateUrl: './new-order.component.html',
   styleUrl: './new-order.component.scss',
@@ -37,7 +52,7 @@ export class NewOrderComponent implements OnInit {
 
   clientsData: Customers[] = [];
   cakesData: Cakes[] = [];
-  selectedClient!: Customers;
+  selectedClient: Customers | null = null;
   selectedCale!: Cakes;
 
   firstFormGroup = this.#formBuilder.group({
@@ -63,7 +78,14 @@ export class NewOrderComponent implements OnInit {
     );
   }
 
-  displayClient(clientId: string | number): string {
+  onClientSelected(event: MatAutocompleteSelectedEvent): void {
+    const selected = event.option.value;
+    this.#customerService.getOneCustomer(selected).subscribe((response) => {
+      this.selectedClient = response;
+    });
+  }
+
+  displayClient(clientId: string): string {
     if (!clientId) return '';
     const client = this.clientsData.find((c) => c.id === clientId);
     return client ? `${client.lastname} ${client.firstname}` : '';
@@ -79,5 +101,9 @@ export class NewOrderComponent implements OnInit {
     this.#cakesService.getCakes().subscribe((response: Cakes[]) => {
       this.cakesData = response;
     });
+  }
+
+  resetClient(): void {
+    this.selectedClient = null;
   }
 }

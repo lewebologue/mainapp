@@ -15,6 +15,7 @@
           <mat-autocomplete
             #auto="matAutocomplete"
             [displayWith]="displayClient.bind(this)"
+            (optionSelected)="onClientSelected($event)"
           >
             @for (option of clientsData; track option) {
               <mat-option [value]="option.id"
@@ -25,7 +26,17 @@
         </mat-form-field>
       </form>
     } @else {
-      <h2>Nouvelle commande pour {{ selectedClient }}</h2>
+      <div class="clientInfo">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{selectedClient.firstname}} {{selectedClient.lastname}}</mat-card-title>
+            <mat-card-subtitle>{{selectedClient.phone}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions>
+            <button mat-button (click)="resetClient()">Modifier le client</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
     }
   </div>
   <div class="cake-selection">
