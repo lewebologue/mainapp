@@ -1,0 +1,83 @@
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Customers } from '../../models/customers.interface';
+import { ClientsService } from '../../services/clients.service';
+import { CakesService } from '../../services/cakes.service';
+import { Cakes } from '../../models/cakes.interface';
+import { ButtonComponent } from '../../components/button/button.component';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+  MatOption,
+} from '@angular/material/autocomplete';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-new-order',
+  imports: [
+    CommonModule,
+    ButtonComponent,
+    MatLabel,
+    MatAutocomplete,
+    MatAutocompleteTrigger,
+    MatInput,
+    MatLabel,
+    MatOption,
+    ReactiveFormsModule,
+    MatFormField,
+  ],
+  templateUrl: './new-order.component.html',
+  styleUrl: './new-order.component.scss',
+})
+export class NewOrderComponent implements OnInit {
+  #customerService = inject(ClientsService);
+  #cakesService = inject(CakesService);
+  #formBuilder = inject(FormBuilder);
+
+  clientsData: Customers[] = [];
+  cakesData: Cakes[] = [];
+  selectedClient!: Customers;
+  selectedCale!: Cakes;
+
+  firstFormGroup = this.#formBuilder.group({
+    clientControl: [[''], Validators.required],
+  });
+
+  ngOnInit(): void {
+    this.getAllCakes();
+    this.getAllCustomers();
+    // this.filteredOptions = this.cakeControl.valueChanges.pipe(
+    //   startWith(''),
+    //   map((value) => (typeof value === 'string' ? value : '')),
+    //   map((name) => (name ? this._filter(name) : this.clients.slice())),
+    // );
+  }
+
+  private _filter(value: string): Customers[] {
+    const filterValue = value.toLowerCase();
+    return this.clientsData.filter(
+      (client) =>
+        client.lastname.toLowerCase().includes(filterValue) ||
+        client.firstname.toLowerCase().includes(filterValue),
+    );
+  }
+
+  displayClient(clientId: string | number): string {
+    if (!clientId) return '';
+    const client = this.clientsData.find((c) => c.id === clientId);
+    return client ? `${client.lastname} ${client.firstname}` : '';
+  }
+
+  getAllCustomers() {
+    this.#customerService.getCustomers().subscribe((response: Customers[]) => {
+      this.clientsData = response;
+    });
+  }
+
+  getAllCakes(): void {
+    this.#cakesService.getCakes().subscribe((response: Cakes[]) => {
+      this.cakesData = response;
+    });
+  }
+}

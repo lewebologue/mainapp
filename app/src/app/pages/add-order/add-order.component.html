@@ -101,6 +101,7 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Récapitulatif</ng-template>
+    {{ orderedCakes }}
     <app-button
       [text]="'Retour aux commandes'"
       [route]="'/orders'"

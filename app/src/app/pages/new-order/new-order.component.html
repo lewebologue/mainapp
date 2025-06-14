@@ -1,0 +1,38 @@
+<div id="new-order-container">
+  <div class="client-selection">
+    @if (!selectedClient) {
+      <form [formGroup]="firstFormGroup">
+        <mat-form-field class="example-full-width">
+          <mat-label>Choix du client</mat-label>
+          <input
+            type="text"
+            placeholder="Recherche"
+            aria-label="Choix du client"
+            matInput
+            [formControl]="firstFormGroup.controls.clientControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            [displayWith]="displayClient.bind(this)"
+          >
+            @for (option of clientsData; track option) {
+              <mat-option [value]="option.id"
+              >{{ option.lastname }} {{ option.firstname }}</mat-option
+              >
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    } @else {
+      <h2>Nouvelle commande pour {{ selectedClient }}</h2>
+    }
+  </div>
+  <div class="cake-selection">
+    <app-button
+      [text]="'AJOUTER UN GATAL'"
+      [icon]="'list_alt'"
+      [route]="'orders'">
+    </app-button>
+  </div>
+</div>

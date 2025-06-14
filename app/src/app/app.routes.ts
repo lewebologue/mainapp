@@ -4,7 +4,7 @@ import { CakesComponent } from './pages/cakes/cakes.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { KpiComponent } from './pages/kpi/kpi.component';
 import { OrdersComponent } from './pages/orders/orders.component';
-import { AddOrderComponent } from './pages/add-order/add-order.component';
+import { NewOrderComponent } from './pages/new-order/new-order.component';
 
 export const routes: Routes = [
   {
@@ -21,7 +21,7 @@ export const routes: Routes = [
   },
   {
     path: 'add-orders',
-    component: AddOrderComponent,
+    component: NewOrderComponent,
   },
   {
     path: 'clients',
