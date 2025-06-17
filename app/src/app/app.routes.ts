@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';import { CakesComponent } from './pages/cakes/cakes.component';
+import { Routes } from '@angular/router';
+import { CakesComponent } from './pages/cakes/cakes.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { KpiComponent } from './pages/kpi/kpi.component';
 import { OrdersComponent } from './pages/orders/orders.component';
