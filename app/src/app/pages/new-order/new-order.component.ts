@@ -4,7 +4,6 @@ import { Customers } from '../../models/customers.interface';
 import { ClientsService } from '../../services/clients.service';
 import { CakesService } from '../../services/cakes.service';
 import { Cakes } from '../../models/cakes.interface';
-import { ButtonComponent } from '../../components/button/button.component';
 import {
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
@@ -26,7 +25,6 @@ import { MatButton } from '@angular/material/button';
   selector: 'app-new-order',
   imports: [
     CommonModule,
-    ButtonComponent,
     MatLabel,
     MatAutocomplete,
     MatAutocompleteTrigger,
@@ -53,7 +51,7 @@ export class NewOrderComponent implements OnInit {
   clientsData: Customers[] = [];
   cakesData: Cakes[] = [];
   selectedClient: Customers | null = null;
-  selectedCale!: Cakes;
+  selectedCake: Cakes[] = [];
 
   firstFormGroup = this.#formBuilder.group({
     clientControl: [[''], Validators.required],
@@ -69,13 +67,13 @@ export class NewOrderComponent implements OnInit {
     // );
   }
 
-  private _filter(value: string): Customers[] {
-    const filterValue = value.toLowerCase();
-    return this.clientsData.filter(
-      (client) =>
-        client.lastname.toLowerCase().includes(filterValue) ||
-        client.firstname.toLowerCase().includes(filterValue),
-    );
+  // private _filter(value: string): Customers[] {
+  //   const filterValue = value.toLowerCase();
+  //   return this.clientsData.filter(
+  //     (client) =>
+  //       client.lastname.toLowerCase().includes(filterValue) ||
+  //       client.firstname.toLowerCase().includes(filterValue),
+  //   );
   }
 
   onClientSelected(event: MatAutocompleteSelectedEvent): void {
@@ -105,5 +103,11 @@ export class NewOrderComponent implements OnInit {
 
   resetClient(): void {
     this.selectedClient = null;
+  }
+
+  addToOrder(event: MatAutocompleteSelectedEvent): void {
+    const cake: Cakes = event.option.value;
+    this.selectedCake.push(cake);
+    // console.log('addToOrder', this.selectedCake);
   }
 }

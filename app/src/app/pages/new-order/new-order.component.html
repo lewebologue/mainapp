@@ -39,11 +39,63 @@
       </div>
     }
   </div>
-  <div class="cake-selection">
-    <app-button
-      [text]="'AJOUTER UN GATAL'"
-      [icon]="'list_alt'"
-      [route]="'orders'">
-    </app-button>
+  <div class="table_component" role="region" tabindex="0">
+    <table>
+      <thead>
+        <tr>
+          <th>Gâteau</th>
+          <th>Parts</th>
+          <th>Prix unitaire</th>
+          <th>Quantité</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (selectedCake.length === 0) {
+          <p>Aucun gâteau selectionné</p>
+        }
+        @for (cake of selectedCake; track cake ) {
+          <tr>
+            <td>{{cake.name}}</td>
+            <td>{{cake.parts}}</td>
+            <td>{{cake.price}} €</td>
+            <td>
+              <input type="number" [defaultValue]="1">
+            </td>
+            <td>Total ligne</td>
+            <td>suppression</td>
+          </tr>
+        }
+      </tbody>
+      @if (selectedCake.length >=1 ){
+        <tfoot>
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; font-weight: bold;">
+              Total général : 1 €
+            </td>
+            <td></td>
+          </tr>
+        </tfoot>
+      }
+    </table>
   </div>
+</div>
+<div class="addCakeInput">
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Number</mat-label>
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="Number"
+             matInput
+             [matAutocomplete]="autoCake">
+      <mat-autocomplete #autoCake="matAutocomplete" (optionSelected)="addToOrder($event)">
+        @for (option of cakesData; track option) {
+          <mat-option [value]="option">{{option.name}} - {{option.parts}} parts</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
 </div>

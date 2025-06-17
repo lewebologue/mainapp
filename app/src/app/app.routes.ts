@@ -1,6 +1,4 @@
-import { Routes } from '@angular/router';
-import { HomepageComponent } from './pages/homepage/homepage.component';
-import { CakesComponent } from './pages/cakes/cakes.component';
+import { Routes } from '@angular/router';import { CakesComponent } from './pages/cakes/cakes.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { KpiComponent } from './pages/kpi/kpi.component';
 import { OrdersComponent } from './pages/orders/orders.component';
@@ -9,7 +7,7 @@ import { NewOrderComponent } from './pages/new-order/new-order.component';
 export const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent,
+    component: OrdersComponent,
   },
   {
     path: 'cakes',
