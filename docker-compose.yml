@@ -27,50 +27,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=${API_DB_USER:-postgres}
-      - POSTGRES_PASSWORD=${API_DB_PASSWORD:-postgres}
-      - POSTGRES_DB=${API_DB_NAME:-main_db}
+      - POSTGRES_USER=${API_DB_USER}
+      - POSTGRES_PASSWORD=${API_DB_PASSWORD:}
+      - POSTGRES_DB=${API_DB_NAME:}
     volumes:
       - postgres_data_api:/var/lib/postgresql/data
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  db_keycloak:
-    image: postgres:15
-    container_name: MainatApp-db-keycloak
-    ports:
-      - "5433:5432"
-    environment:
-      - POSTGRES_USER=${KC_DB_USER:-keycloak}
-      - POSTGRES_PASSWORD=${KC_DB_PASSWORD:-keycloak}
-      - POSTGRES_DB=${KC_DB_NAME:-keycloak_db}
-    volumes:
-      - postgres_data_keycloak:/var/lib/postgresql/data
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    container_name: MainatApp-keycloak
-    ports:
-      - "8080:8080"
-    environment:
-      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
-      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
-      - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://db_keycloak:5432/${KC_DB_NAME:-keycloak_db}
-      - KC_DB_USERNAME=${KC_DB_USER:-keycloak}
-      - KC_DB_PASSWORD=${KC_DB_PASSWORD:-keycloak}
-    command: start-dev
-    # Pour importer un realm au démarrage, décommentez la ligne suivante et placez le fichier dans ./keycloak/realm.json
-    # volumes:
-    #   - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json
-    # environment:
-    #   - KEYCLOAK_IMPORT=/opt/keycloak/data/import/realm.json
-    depends_on:
-      - db_keycloak
     networks:
       - app-network
     restart: unless-stopped
@@ -81,4 +42,3 @@ networks:
 
 volumes:
   postgres_data_api:
-  postgres_data_keycloak:
