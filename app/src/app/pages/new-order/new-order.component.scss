@@ -1,0 +1,182 @@
+#new-order-container {
+  width: 98%;
+  margin: 1rem auto;
+
+  .clientInfo {
+    margin-bottom: 1rem;
+  }
+
+  .order-table {
+    margin-top: 2rem;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+
+      thead {
+        th {
+          //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background-color: #d7e3ff;
+          color: #00458f;
+          padding: 16px 12px;
+          font-weight: 600;
+          text-align: left;
+          font-size: 14px;
+          border: none;
+
+          &:first-child {
+            border-top-left-radius: 8px;
+          }
+
+          &:last-child {
+            border-top-right-radius: 8px;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          transition: background-color 0.2s ease;
+
+          &:nth-child(even):not(.add-item-row) {
+            background-color: #f8f9fa;
+          }
+
+          &:hover:not(.add-item-row) {
+            background-color: #e3f2fd;
+          }
+
+          td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+
+            .quantity-input {
+              width: 60px;
+              padding: 8px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              text-align: center;
+              font-size: 14px;
+
+              &:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+              }
+            }
+          }
+
+          &.add-item-row {
+            background-color: #f5f5f5;
+            border-top: 2px solid #667eea;
+
+            td {
+              padding: 16px 12px;
+
+              .full-width {
+                width: 100%;
+
+                .mat-mdc-form-field-flex {
+                  background-color: white;
+                  border-radius: 4px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      tfoot {
+        tr {
+          background-color: #f1f3f4;
+
+          .total-cell {
+            padding: 16px 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1976d2;
+            text-align: right;
+            border-top: 2px solid #667eea;
+          }
+        }
+      }
+    }
+  }
+}
+.empty-order {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-top: 20px;
+
+  p {
+    margin: 0;
+    font-style: italic;
+  }
+}
+.full-width {
+  width: 100%;
+}
+
+// Styles spécifiques pour Angular Material
+.mat-mdc-icon-button {
+  &.mat-warn {
+    color: #f44336;
+
+    &:hover {
+      background-color: rgba(244, 67, 54, 0.1);
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  #new-order-container {
+    width: 95%;
+
+    .order-table {
+      table {
+        font-size: 12px;
+
+        thead th {
+          padding: 12px 8px;
+          font-size: 12px;
+        }
+
+        tbody td {
+          padding: 8px 6px;
+
+          .quantity-input {
+            width: 50px;
+            padding: 6px;
+            font-size: 12px;
+          }
+        }
+
+        tfoot .total-cell {
+          font-size: 16px;
+          padding: 12px 8px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  #new-order-container {
+    .order-table {
+      overflow-x: auto;
+
+      table {
+        min-width: 600px;
+      }
+    }
+  }
+}

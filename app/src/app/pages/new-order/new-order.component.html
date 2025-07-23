@@ -1,0 +1,125 @@
+<div id="new-order-container">
+  <div class="client-selection">
+    @if (!selectedClient) {
+      <div class="empty-order">
+        <p>Aucun client sélectionné</p>
+      </div>
+      <form [formGroup]="firstFormGroup">
+        <mat-form-field class="full-width">
+          <mat-label>Choix du client</mat-label>
+          <input
+            type="text"
+            placeholder="Recherche"
+            aria-label="Choix du client"
+            matInput
+            [formControl]="firstFormGroup.controls.clientControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            [displayWith]="displayClient.bind(this)"
+            (optionSelected)="onClientSelected($event)"
+          >
+            @for (option of clientsData; track option) {
+              <mat-option [value]="option.id"
+              >{{ option.lastname }} {{ option.firstname }}</mat-option
+              >
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    } @else {
+      <div class="clientInfo">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{selectedClient.firstname}} {{selectedClient.lastname}}</mat-card-title>
+            <mat-card-subtitle>{{selectedClient.phone}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions>
+            <button mat-button (click)="resetClient()">Modifier le client</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    }
+  </div>
+
+  <div class="order-table">
+    <table>
+      <thead>
+      <tr>
+        <th>Gâteau</th>
+        <th>Parts</th>
+        <th>Prix unitaire</th>
+        <th>Quantité</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (item of orderItems; track item.cake.id; let i = $index) {
+          <tr>
+            <td>{{ item.cake.name }}</td>
+            <td>{{ item.cake.parts }}</td>
+            <td>{{ item.cake.price }} €</td>
+            <td>
+              <input
+                type="number"
+                min="1"
+                [value]="item.quantity"
+                (change)="updateQuantity(item, +$any($event.target).value)"
+                class="quantity-input"
+              >
+            </td>
+            <td>{{ item.total }} €</td>
+            <td>
+              <button mat-icon-button (click)="removeItem(i)" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        }
+      <tr class="add-item-row">
+        <td colspan="6">
+          <mat-form-field class="full-width">
+            <mat-label>Ajouter un gâteau</mat-label>
+            <input
+              type="text"
+              placeholder="Rechercher un gâteau"
+              matInput
+              [formControl]="firstFormGroup.controls.cakeControl"
+              [matAutocomplete]="autoCake"
+            >
+            <mat-autocomplete
+              #autoCake="matAutocomplete"
+              (optionSelected)="addToOrder($event)"
+            >
+              @for (cake of cakesData; track cake.id) {
+                <mat-option [value]="cake">
+                  {{ cake.name }} - {{ cake.parts }} parts ({{ cake.price }} €)
+                </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </td>
+      </tr>
+      </tbody>
+      @if (orderItems.length > 0) {
+        <tfoot>
+        <tr>
+          <td colspan="4"></td>
+          <td class="total-cell">
+            <strong>Total: {{ getTotalOrder() }} €</strong>
+          </td>
+          <td></td>
+        </tr>
+        </tfoot>
+      }
+    </table>
+
+    @if (orderItems.length === 0) {
+      <div class="empty-order">
+        <p>Aucun gâteau sélectionné</p>
+      </div>
+    }
+  </div>
+</div>

@@ -6,4 +6,5 @@ export class CreateUserDto {
   Role: Role;
   createdAt: Date;
   updatedAt: Date;
+  password: string;
 }

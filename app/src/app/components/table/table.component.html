@@ -37,27 +37,42 @@
       </ng-container>
     }
 
-    <ng-container matColumnDef="actions">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        aria-hidden="true"
-        class="action-column"
-      ></th>
-      <td mat-cell *matCellDef="let element" class="actions-cell">
-        @if (editMode) {
-          <mat-icon class="done-icon" (click)="onValid()">done</mat-icon>
-          <mat-icon class="delete-icon" (click)="onClose()">close</mat-icon>
-        } @else {
-          <mat-icon class="edit-icon" (click)="onEdit(element.id)"
-            >edit</mat-icon
-          >
-          <mat-icon class="delete-icon" (click)="onDelete(element.id)"
-            >delete</mat-icon
-          >
-        }
-      </td>
-    </ng-container>
+    @if(!orderTable) {
+      <ng-container matColumnDef="actions">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          aria-hidden="true"
+          class="action-column"
+        ></th>
+        <td mat-cell *matCellDef="let element" class="actions-cell">
+          @if (editMode) {
+            <mat-icon class="done-icon" (click)="onValid()">done</mat-icon>
+            <mat-icon class="delete-icon" (click)="onClose()">close</mat-icon>
+          } @else {
+            <mat-icon class="edit-icon" (click)="onEdit(element.id)"
+              >edit</mat-icon
+            >
+            <mat-icon class="delete-icon" (click)="onDelete(element.id)"
+              >delete</mat-icon
+            >
+          }
+        </td>
+      </ng-container>
+    }
+    @else {
+      <ng-container matColumnDef="actions">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          aria-hidden="true"
+          class="action-column"
+        ></th>
+        <td mat-cell *matCellDef="let element" class="actions-cell">
+          <mat-icon class="done-icon" (click)="addCakeToOrder(element.id)">add_circle</mat-icon>
+        </td>
+      </ng-container>
+    }
 
     <tr
       mat-header-row
