@@ -19,7 +19,14 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+
+interface OrderItem {
+  cake: Cakes;
+  quantity: number;
+  total: number;
+}
 
 @Component({
   selector: 'app-new-order',
@@ -29,7 +36,6 @@ import { MatButton } from '@angular/material/button';
     MatAutocomplete,
     MatAutocompleteTrigger,
     MatInput,
-    MatLabel,
     MatOption,
     ReactiveFormsModule,
     MatFormField,
@@ -37,8 +43,10 @@ import { MatButton } from '@angular/material/button';
     MatCardHeader,
     MatCardActions,
     MatButton,
+    MatIconButton,
     MatCardSubtitle,
     MatCardTitle,
+    MatIcon,
   ],
   templateUrl: './new-order.component.html',
   styleUrl: './new-order.component.scss',
@@ -51,29 +59,16 @@ export class NewOrderComponent implements OnInit {
   clientsData: Customers[] = [];
   cakesData: Cakes[] = [];
   selectedClient: Customers | null = null;
-  selectedCake: Cakes[] = [];
+  orderItems: OrderItem[] = [];
 
   firstFormGroup = this.#formBuilder.group({
-    clientControl: [[''], Validators.required],
+    clientControl: ['', Validators.required],
+    cakeControl: [''],
   });
 
   ngOnInit(): void {
     this.getAllCakes();
     this.getAllCustomers();
-    // this.filteredOptions = this.cakeControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => (typeof value === 'string' ? value : '')),
-    //   map((name) => (name ? this._filter(name) : this.clients.slice())),
-    // );
-  }
-
-  // private _filter(value: string): Customers[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.clientsData.filter(
-  //     (client) =>
-  //       client.lastname.toLowerCase().includes(filterValue) ||
-  //       client.firstname.toLowerCase().includes(filterValue),
-  //   );
   }
 
   onClientSelected(event: MatAutocompleteSelectedEvent): void {
@@ -107,7 +102,37 @@ export class NewOrderComponent implements OnInit {
 
   addToOrder(event: MatAutocompleteSelectedEvent): void {
     const cake: Cakes = event.option.value;
-    this.selectedCake.push(cake);
-    // console.log('addToOrder', this.selectedCake);
+    const existingItem = this.orderItems.find(
+      (item) => item.cake.id === cake.id,
+    );
+
+    if (existingItem) {
+      existingItem.quantity++;
+      existingItem.total = existingItem.quantity * existingItem.cake.price;
+    } else {
+      this.orderItems.push({
+        cake: cake,
+        quantity: 1,
+        total: cake.price,
+      });
+    }
+
+    // Reset le champ de recherche
+    this.firstFormGroup.get('cakeControl')?.setValue('');
+  }
+
+  updateQuantity(item: OrderItem, quantity: number): void {
+    if (quantity > 0) {
+      item.quantity = quantity;
+      item.total = item.quantity * item.cake.price;
+    }
+  }
+
+  removeItem(index: number): void {
+    this.orderItems.splice(index, 1);
+  }
+
+  getTotalOrder(): number {
+    return this.orderItems.reduce((total, item) => total + item.total, 0);
   }
 }

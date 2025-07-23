@@ -24,15 +24,15 @@ model User {
 }
 
 model Customer {
-  id            String   @id @default(uuid())
-  lastname      String
-  firstname     String
-  email         String?
-  phone         String?
-  address       String?
-  orders        Order[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id        String   @id @default(uuid())
+  lastname  String
+  firstname String
+  email     String?
+  phone     String?
+  address   String?
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cake {
@@ -43,21 +43,22 @@ model Cake {
   orders    Order[]  @relation("OrderCakes")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  color     String   @default("#FFF")
 }
 
 model Order {
-  id              String   @id @default(uuid())
-  customerId      String
-  customer        Customer @relation(fields: [customerId], references: [id])
-  cakes           Cake[]   @relation("OrderCakes")
-  total           Float
-  Withdrawal_date DateTime
-  PaymentMethod   PaymentMethod
-  deposit         Float?
+  id                String        @id @default(uuid())
+  customerId        String
+  customer          Customer      @relation(fields: [customerId], references: [id])
+  cakes             Cake[]        @relation("OrderCakes")
+  total             Float
+  Withdrawal_date   DateTime
+  PaymentMethod     PaymentMethod
+  deposit           Float?
   remaining_balance Float?
-  delivered       Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  delivered         Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 }
 
 enum Role {
