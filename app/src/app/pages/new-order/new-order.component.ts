@@ -117,7 +117,6 @@ export class NewOrderComponent implements OnInit {
       });
     }
 
-    // Reset le champ de recherche
     this.firstFormGroup.get('cakeControl')?.setValue('');
   }
 
