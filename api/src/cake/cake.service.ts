@@ -7,6 +7,7 @@ export class CakeService {
   constructor(private prisma: PrismaService) {}
 
   async createCake(data: Prisma.CakeCreateInput): Promise<Cake> {
+    if (!data.color) data.color = '#FFF';
     return this.prisma.cake.create({
       data,
     });

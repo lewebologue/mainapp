@@ -1,2 +1,5 @@
-<app-navbar></app-navbar>
+@if (authService.currentUser$ | async){
+    <app-navbar></app-navbar>
+}
+
 <router-outlet />
