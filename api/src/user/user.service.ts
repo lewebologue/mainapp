@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -32,5 +32,14 @@ export class UserService {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
     });
+  }
+
+  async findByEmailOrName(identifier: string): Promise<User | null> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ email: identifier }, { name: identifier }],
+      },
+    });
+    return user;
   }
 }

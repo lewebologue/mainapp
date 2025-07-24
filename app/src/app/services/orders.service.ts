@@ -18,19 +18,4 @@ export class OrdersService {
   getOneOrder(id: string): Observable<Orders> {
     return this.httpClient.get<Orders>(`${this.#apiBaseUrl}/order/${id}`);
   }
-
-  deleteCustomer(id: string): Observable<Orders> {
-    return this.httpClient.delete<Orders>(`${this.#apiBaseUrl}/order/${id}`);
-  }
-
-  updateCustomer(id: string, data: Orders): Observable<Orders> {
-    return this.httpClient.patch<Orders>(
-      `${this.#apiBaseUrl}/order/${id}`,
-      data,
-    );
-  }
-
-  createCustomer(data: Orders) {
-    return this.httpClient.post(`${this.#apiBaseUrl}/order`, data);
-  }
 }

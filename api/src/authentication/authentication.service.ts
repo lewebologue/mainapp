@@ -11,10 +11,10 @@ export class AuthenticationService {
   ) {}
 
   async signIn(
-    email: string,
+    identifier: string,
     password: string,
   ): Promise<{ access_token: string }> {
-    const user = await this.usersService.find({ email });
+    const user = await this.usersService.findByEmailOrName(identifier);
     if (!user) {
       throw new HttpException('User not found', 404);
     }
