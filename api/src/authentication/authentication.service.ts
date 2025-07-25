@@ -2,6 +2,7 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { LoginResponse } from 'src/interfaces/loginResponse.interface';
 
 @Injectable()
 export class AuthenticationService {
@@ -12,10 +13,7 @@ export class AuthenticationService {
     private jwt: JwtService,
   ) {}
 
-  async signIn(
-    identifier: string,
-    password: string,
-  ): Promise<{ access_token: string }> {
+  async signIn(identifier: string, password: string): Promise<LoginResponse> {
     this.logger.log(`Sign-in attempt for identifier: ${identifier}`);
 
     const user = await this.usersService.findByEmailOrName(identifier);
@@ -34,6 +32,8 @@ export class AuthenticationService {
     this.logger.log(`Successful sign-in for user: ${user.name}`);
     const payload = { name: user.name, role: user.Role };
     return {
+      user: user.name || '',
+      role: user.Role,
       access_token: await this.jwt.signAsync(payload),
     };
   }

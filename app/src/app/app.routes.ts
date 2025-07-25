@@ -6,41 +6,45 @@ import { OrdersComponent } from './pages/orders/orders.component';
 import { NewOrderComponent } from './pages/new-order/new-order.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
-import { RoleGuard } from './guards/role.guard';
+// import { RoleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: '/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
     component: LoginComponent,
   },
   {
     path: 'cakes',
     component: CakesComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN', 'USER'] },
+    canActivate: [AuthGuard],
   },
   {
     path: 'orders',
     component: OrdersComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN', 'USER'] },
+    canActivate: [AuthGuard],
   },
   {
     path: 'add-orders',
     component: NewOrderComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN', 'USER'] },
+    canActivate: [AuthGuard],
   },
   {
     path: 'clients',
     component: ClientsComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN', 'USER'] },
+    canActivate: [AuthGuard],
   },
   {
     path: 'kpi',
     component: KpiComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['ADMIN', 'USER'] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '**',
+    redirectTo: '/login',
   },
 ];
