@@ -13,6 +13,8 @@ RUN npm install
 # Générer les fichiers Prisma
 COPY prisma ./prisma
 RUN npx prisma generate
+# Mise à jour de la base de donnée
+RUN npw prisma db push
 
 # Copier le reste des fichiers de l'application
 COPY . .
