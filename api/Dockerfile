@@ -13,8 +13,6 @@ RUN npm install
 # Générer les fichiers Prisma
 COPY prisma ./prisma
 RUN npx prisma generate
-# Mise à jour de la base de donnée
-RUN npx prisma db push
 
 # Copier le reste des fichiers de l'application
 COPY . .
@@ -43,4 +41,4 @@ ENV PROD_FRONT=
 ENV JWT_SECRET=
 
 # Commande pour démarrer l'application
-CMD ["node", "dist/main"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
