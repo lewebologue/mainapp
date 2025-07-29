@@ -2,7 +2,7 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { LoginResponse } from 'src/interfaces/loginResponse.interface';
+import { LoginResponse } from 'src/shared/interfaces/loginResponse.interface';
 
 @Injectable()
 export class AuthenticationService {

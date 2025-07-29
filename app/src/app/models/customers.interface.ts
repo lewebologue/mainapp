@@ -1,8 +1,8 @@
 export interface Customers {
-  id?: string;
+  id: string;
   lastname: string;
   firstname: string;
-  email: string;
+  email?: string;
   phone: string;
   address?: string;
   createdAt?: Date;

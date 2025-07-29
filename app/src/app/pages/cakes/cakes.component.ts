@@ -65,6 +65,7 @@ export class CakesComponent implements OnInit {
   createCake() {
     if (this.addCakeControlGroup.valid) {
       const cakeData: Cakes = {
+        id: '',
         name: this.addCakeControlGroup.value.name ?? '',
         parts: this.addCakeControlGroup.value.parts ?? 0,
         price: this.addCakeControlGroup.value.price ?? 0,
@@ -84,6 +85,7 @@ export class CakesComponent implements OnInit {
 
   editCake(data: FormGroup) {
     const editCakeData: Cakes = {
+      id: data.value.id,
       name: data.value.name,
       parts: parseInt(data.value.parts),
       price: parseInt(data.value.price),

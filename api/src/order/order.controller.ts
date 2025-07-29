@@ -28,12 +28,33 @@ export class OrderController {
     description: 'Bad request',
   })
   create(@Body() createOrderDto: CreateOrderDto) {
+    // Handle both frontend format (customerId, cakeIds) and direct format (customer, cakes)
+    const customerId =
+      createOrderDto.customerId || createOrderDto.customer?.connect?.id;
+    const cakeIds =
+      createOrderDto.cakeIds ||
+      createOrderDto.cakes?.map((cake) => cake.id) ||
+      [];
+
+    if (!customerId) {
+      throw new Error('Customer ID is required');
+    }
+
+    if (cakeIds.length === 0) {
+      throw new Error('At least one cake is required');
+    }
+
     const data = {
-      ...createOrderDto,
-      cakes: {
-        connect: createOrderDto.cakes.map((cake) => ({ id: cake.id })),
-      },
+      customer: { connect: { id: customerId } },
+      cakes: { connect: cakeIds.map((cakeId) => ({ id: cakeId })) },
+      total: createOrderDto.total,
+      Withdrawal_date: createOrderDto.Withdrawal_date,
+      PaymentMethod: createOrderDto.PaymentMethod,
+      deposit: createOrderDto.deposit,
+      remaining_balance: createOrderDto.remaining_balance,
+      delivered: createOrderDto.delivered || false,
     };
+
     return this.orderService.createOrder(data);
   }
 

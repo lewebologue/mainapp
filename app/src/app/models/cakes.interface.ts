@@ -1,5 +1,5 @@
 export interface Cakes {
-  id?: string;
+  id: string;
   name: string;
   price: number;
   parts: number;

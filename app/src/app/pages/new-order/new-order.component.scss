@@ -136,6 +136,39 @@
   }
 }
 
+.payment-container {
+  margin-top: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #dee2e6;
+
+  .deposit {
+    .example-form {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+
+      mat-form-field {
+        flex: 1;
+        min-width: 200px;
+      }
+    }
+
+    .order-actions {
+      margin-top: 1.5rem;
+      text-align: center;
+
+      button {
+        padding: 12px 32px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
 // Responsive design
 @media (max-width: 768px) {
   #new-order-container {

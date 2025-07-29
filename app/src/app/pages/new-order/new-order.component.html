@@ -22,7 +22,7 @@
           >
             @for (option of clientsData; track option) {
               <mat-option [value]="option.id"
-              >{{ option.lastname }} {{ option.firstname }}</mat-option
+                >{{ option.lastname }} {{ option.firstname }}</mat-option
               >
             }
           </mat-autocomplete>
@@ -32,11 +32,16 @@
       <div class="clientInfo">
         <mat-card appearance="outlined">
           <mat-card-header>
-            <mat-card-title>{{selectedClient.firstname}} {{selectedClient.lastname}}</mat-card-title>
-            <mat-card-subtitle>{{selectedClient.phone}}</mat-card-subtitle>
+            <mat-card-title
+              >{{ selectedClient.firstname }}
+              {{ selectedClient.lastname }}</mat-card-title
+            >
+            <mat-card-subtitle>{{ selectedClient.phone }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-actions>
-            <button mat-button (click)="resetClient()">Modifier le client</button>
+            <button mat-button (click)="resetClient()">
+              Modifier le client
+            </button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -46,14 +51,14 @@
   <div class="order-table">
     <table>
       <thead>
-      <tr>
-        <th>Gâteau</th>
-        <th>Parts</th>
-        <th>Prix unitaire</th>
-        <th>Quantité</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
+        <tr>
+          <th>Gâteau</th>
+          <th>Parts</th>
+          <th>Prix unitaire</th>
+          <th>Quantité</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
       </thead>
       <tbody>
         @for (item of orderItems; track item.cake.id; let i = $index) {
@@ -68,7 +73,7 @@
                 [value]="item.quantity"
                 (change)="updateQuantity(item, +$any($event.target).value)"
                 class="quantity-input"
-              >
+              />
             </td>
             <td>{{ item.total }} €</td>
             <td>
@@ -78,43 +83,97 @@
             </td>
           </tr>
         }
-      <tr class="add-item-row">
-        <td colspan="6">
-          <mat-form-field class="full-width">
-            <mat-label>Ajouter un gâteau</mat-label>
-            <input
-              type="text"
-              placeholder="Rechercher un gâteau"
-              matInput
-              [formControl]="firstFormGroup.controls.cakeControl"
-              [matAutocomplete]="autoCake"
-            >
-            <mat-autocomplete
-              #autoCake="matAutocomplete"
-              (optionSelected)="addToOrder($event)"
-            >
-              @for (cake of cakesData; track cake.id) {
-                <mat-option [value]="cake">
-                  {{ cake.name }} - {{ cake.parts }} parts ({{ cake.price }} €)
-                </mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-        </td>
-      </tr>
+        <tr class="add-item-row">
+          <td colspan="6">
+            <mat-form-field class="full-width">
+              <mat-label>Ajouter un gâteau</mat-label>
+              <input
+                type="text"
+                placeholder="Rechercher un gâteau"
+                matInput
+                [formControl]="firstFormGroup.controls.cakeControl"
+                [matAutocomplete]="autoCake"
+              />
+              <mat-autocomplete
+                #autoCake="matAutocomplete"
+                (optionSelected)="addToOrder($event)"
+              >
+                @for (cake of cakesData; track cake.id) {
+                  <mat-option [value]="cake">
+                    {{ cake.name }} - {{ cake.parts }} parts ({{ cake.price }}
+                    €)
+                  </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </td>
+        </tr>
       </tbody>
       @if (orderItems.length > 0) {
         <tfoot>
-        <tr>
-          <td colspan="4"></td>
-          <td class="total-cell">
-            <strong>Total: {{ getTotalOrder() }} €</strong>
-          </td>
-          <td></td>
-        </tr>
+          <tr>
+            <td colspan="4"></td>
+            <td class="total-cell">
+              <strong>Total: {{ getTotalOrder() }} €</strong>
+            </td>
+            <td></td>
+          </tr>
         </tfoot>
       }
     </table>
+    @if (selectedClient && orderItems.length > 0) {
+      <div class="payment-container">
+        <div class="deposit">
+          <form [formGroup]="paymentFormGroup" class="example-form">
+            <mat-form-field class="example-full-width">
+              <mat-label>Accompte</mat-label>
+              <input
+                matInput
+                placeholder="0 €"
+                type="number"
+                formControlName="deposit"
+                min="0"
+                [max]="getTotalOrder()"
+              />
+              <span matSuffix>€</span>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Méthode de paiement</mat-label>
+              <mat-select formControlName="paymentMethod">
+                @for (method of paymentMethodOptions; track method.key) {
+                  <mat-option [value]="method.key">{{
+                    method.label
+                  }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Date de retrait</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="withdrawalDate"
+              />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </form>
+          <div class="order-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="validateOrder()"
+              [disabled]="!selectedClient || orderItems.length === 0"
+            >
+              Valider la commande
+            </button>
+          </div>
+        </div>
+      </div>
+    }
 
     @if (orderItems.length === 0) {
       <div class="empty-order">

@@ -44,7 +44,6 @@ export class ClientsComponent implements OnInit {
   customerControlGroup = this.#formBuilder.group({
     lastname: ['', Validators.required],
     firstname: ['', Validators.required],
-    email: ['', Validators.required],
     phone: ['', Validators.required],
   });
 
@@ -61,9 +60,9 @@ export class ClientsComponent implements OnInit {
   createCustomer() {
     if (this.customerControlGroup.valid) {
       const customerData: Customers = {
+        id: '',
         lastname: this.customerControlGroup.value.lastname ?? '',
         firstname: this.customerControlGroup.value.firstname ?? '',
-        email: this.customerControlGroup.value.email ?? '',
         phone: this.customerControlGroup.value.phone ?? '',
       };
       this.#customerService
@@ -74,6 +73,7 @@ export class ClientsComponent implements OnInit {
 
   editCustomer(data: FormGroup) {
     const editCustomerData: Customers = {
+      id: data.value.id,
       lastname: data.value.lastname ?? '',
       firstname: data.value.firstname ?? '',
       email: data.value.email ?? '',
