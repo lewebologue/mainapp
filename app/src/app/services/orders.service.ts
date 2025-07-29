@@ -23,4 +23,24 @@ export class OrdersService {
   createOrder(orderData: CreateOrder): Observable<Orders> {
     return this.httpClient.post<Orders>(`${this.#apiBaseUrl}/order`, orderData);
   }
+
+  markAsDelivered(orderId: string): Observable<Orders> {
+    return this.httpClient.patch<Orders>(
+      `${this.#apiBaseUrl}/order/${orderId}`,
+      {
+        delivered: true,
+      },
+    );
+  }
+
+  updateOrder(orderId: string, orderData: Partial<Orders>): Observable<Orders> {
+    return this.httpClient.patch<Orders>(
+      `${this.#apiBaseUrl}/order/${orderId}`,
+      orderData,
+    );
+  }
+
+  deleteOrder(orderId: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.#apiBaseUrl}/order/${orderId}`);
+  }
 }

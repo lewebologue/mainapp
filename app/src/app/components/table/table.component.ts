@@ -15,6 +15,8 @@ import { ButtonComponent } from '../button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-table',
@@ -26,6 +28,8 @@ import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -40,6 +44,7 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   @Output() editButtonClick = new EventEmitter<FormGroup>();
   @Output() deleteButtonClick = new EventEmitter<string>();
   @Output() addButtonClick = new EventEmitter<string>();
+  @Output() markAsDeliveredClick = new EventEmitter<string>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -53,20 +58,36 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
     lastname: 'Nom ',
     firstname: 'Prénom',
     phone: 'Téléphone',
+    'customer.firstname': 'Prénom',
+    'customer.lastname': 'Nom',
+    Withdrawal_date: 'Date de retrait',
+    total: 'Total',
+    delivered: 'Statut',
   };
+
+  getNestedProperty(obj: unknown, path: string): string {
+    const result = path
+      .split('.')
+      .reduce((o, p) => (o && (o as Record<string, unknown>)[p]) || '', obj);
+    return result?.toString() || '';
+  }
 
   ngAfterViewInit() {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
     }
-    const controls: Record<string, FormControl> = {};
-    this.displayedColumns.forEach((column) => {
-      if (column !== 'actions') {
-        controls[column] = new FormControl('');
-      }
-    });
 
-    this.formGroup = new FormGroup(controls);
+    // Ne créer des contrôles que si le formGroup n'est pas déjà fourni
+    if (!this.formGroup) {
+      const controls: Record<string, FormControl> = {};
+      this.displayedColumns.forEach((column) => {
+        if (column !== 'actions' && !column.includes('.')) {
+          // Exclure les propriétés imbriquées
+          controls[column] = new FormControl('');
+        }
+      });
+      this.formGroup = new FormGroup(controls);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -104,6 +125,10 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   addCakeToOrder(id: string) {
     const cakeOrder: string[] = [];
     cakeOrder.push(id);
-    console.log(cakeOrder);
+    console.warn('Cake order:', cakeOrder);
+  }
+
+  onMarkAsDelivered(id: string) {
+    this.markAsDeliveredClick.emit(id);
   }
 }

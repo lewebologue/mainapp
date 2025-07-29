@@ -14,31 +14,39 @@
         <app-table
           [dataSource]="todayOrders"
           [displayedColumns]="[
-            'firstname',
-            'lastname',
+            'customer.firstname',
+            'customer.lastname',
             'Withdrawal_date',
             'total',
+            'delivered',
           ]"
-          (deleteButtonClick)="deleteOrder()"
-          (editButtonClick)="editOrder()"
+          [orderTable]="true"
+          [formGroup]="orderFormGroup"
+          (deleteButtonClick)="deleteOrder($event)"
+          (editButtonClick)="editOrder($event)"
+          (markAsDeliveredClick)="markAsDelivered($event)"
         >
         </app-table>
       }
     </mat-tab>
-    <mat-tab label="Toutes les commandes">
-      @if (allOrders.filteredData.length === 0) {
-        <h2 class="orders-table">Pas de commande</h2>
+    <mat-tab label="Commandes à venir">
+      @if (upcomingOrders.filteredData.length === 0) {
+        <h2 class="orders-table">Pas de commande à venir</h2>
       } @else {
         <app-table
-          [dataSource]="todayOrders"
+          [dataSource]="upcomingOrders"
           [displayedColumns]="[
-            'firstname',
-            'lastname',
+            'customer.firstname',
+            'customer.lastname',
             'Withdrawal_date',
             'total',
+            'delivered',
           ]"
-          (deleteButtonClick)="deleteOrder()"
-          (editButtonClick)="editOrder()"
+          [orderTable]="true"
+          [formGroup]="orderFormGroup"
+          (deleteButtonClick)="deleteOrder($event)"
+          (editButtonClick)="editOrder($event)"
+          (markAsDeliveredClick)="markAsDelivered($event)"
         >
         </app-table>
       }

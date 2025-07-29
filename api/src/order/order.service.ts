@@ -26,6 +26,10 @@ export class OrderService {
       cursor,
       where,
       orderBy,
+      include: {
+        customer: true,
+        cakes: true,
+      },
     });
   }
 
@@ -51,6 +55,10 @@ export class OrderService {
   ): Promise<Order | null> {
     return this.prisma.order.findUnique({
       where: CakeWhereUniqueInput,
+      include: {
+        customer: true,
+        cakes: true,
+      },
     });
   }
 }
