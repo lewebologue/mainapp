@@ -24,6 +24,7 @@
           [formGroup]="orderFormGroup"
           (deleteButtonClick)="deleteOrder($event)"
           (editButtonClick)="editOrder($event)"
+          (directEditClick)="navigateToEditOrder($event)"
           (markAsDeliveredClick)="markAsDelivered($event)"
         >
         </app-table>
@@ -46,6 +47,7 @@
           [formGroup]="orderFormGroup"
           (deleteButtonClick)="deleteOrder($event)"
           (editButtonClick)="editOrder($event)"
+          (directEditClick)="navigateToEditOrder($event)"
           (markAsDeliveredClick)="markAsDelivered($event)"
         >
         </app-table>

@@ -1,0 +1,182 @@
+<div class="edit-order-container">
+  <mat-card class="edit-order-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>edit</mat-icon>
+        Modifier la commande
+      </mat-card-title>
+      @if (orderData) {
+        <mat-card-subtitle>
+          Client: {{ orderData.customer.firstname }}
+          {{ orderData.customer.lastname }}
+          <br />{{ orderData.customer.phone }}
+        </mat-card-subtitle>
+      }
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (isLoading) {
+        <div class="loading-container">
+          <p>Chargement en cours...</p>
+        </div>
+      } @else if (orderData) {
+        <!-- Informations sur les gâteaux (modifiable) -->
+        <div class="cakes-info">
+          <div class="cakes-header">
+            <h3>Gâteaux commandés:</h3>
+            <div class="add-cake-section">
+              <mat-form-field class="add-cake-field">
+                <mat-label>Ajouter un gâteau</mat-label>
+                <input
+                  type="text"
+                  placeholder="Rechercher un gâteau"
+                  matInput
+                  [formControl]="cakeControl"
+                  [matAutocomplete]="autoCake"
+                />
+                <mat-autocomplete
+                  #autoCake="matAutocomplete"
+                  [displayWith]="displayCakeFn"
+                  (optionSelected)="onCakeSelected($event)"
+                >
+                  @for (cake of filteredCakes; track cake.id) {
+                    <mat-option [value]="cake">
+                      {{ cake.name }} - {{ cake.parts }} parts ({{
+                        cake.price
+                      }}€)
+                    </mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="cakes-list">
+            @if (selectedCakes.length === 0) {
+              <div class="no-cakes">
+                <p>Aucun gâteau sélectionné</p>
+              </div>
+            } @else {
+              @for (cake of selectedCakes; track cake.id) {
+                <div class="cake-item">
+                  <div class="cake-info">
+                    <span class="cake-name">{{ cake.name }}</span>
+                    <span class="cake-details"
+                      >{{ cake.parts }} parts - {{ cake.price }}€</span
+                    >
+                  </div>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="removeCake(cake.id)"
+                    title="Supprimer ce gâteau"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Formulaire d'édition -->
+        <form [formGroup]="editOrderForm" class="edit-form">
+          <div class="form-row">
+            <mat-form-field class="form-field">
+              <mat-label>Total (€)</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="total"
+                min="0.01"
+                step="0.01"
+                (input)="onTotalChange()"
+              />
+              <span matSuffix>€</span>
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
+              <mat-label>Date de retrait</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="Withdrawal_date"
+                readonly
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field class="form-field">
+              <mat-label>Méthode de paiement</mat-label>
+              <mat-select formControlName="PaymentMethod">
+                @for (method of paymentMethodOptions; track method.key) {
+                  <mat-option [value]="method.key">
+                    {{ method.label }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
+              <mat-label>Accompte (€)</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="deposit"
+                min="0"
+                step="0.01"
+                (input)="onDepositChange()"
+              />
+              <span matSuffix>€</span>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field class="form-field">
+              <mat-label>Solde restant (€)</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="remaining_balance"
+                readonly
+              />
+              <span matSuffix>€</span>
+            </mat-form-field>
+
+            <div class="checkbox-field">
+              <mat-checkbox formControlName="delivered">
+                Commande livrée
+              </mat-checkbox>
+            </div>
+          </div>
+        </form>
+      }
+    </mat-card-content>
+
+    <mat-card-actions class="card-actions">
+      <button mat-button (click)="cancel()" [disabled]="isLoading">
+        <mat-icon>cancel</mat-icon>
+        Annuler
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="updateOrder()"
+        [disabled]="editOrderForm.invalid || isLoading"
+      >
+        <mat-icon>save</mat-icon>
+        @if (isLoading) {
+          Mise à jour...
+        } @else {
+          Sauvegarder
+        }
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

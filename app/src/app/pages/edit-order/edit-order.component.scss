@@ -1,0 +1,198 @@
+.edit-order-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.edit-order-card {
+  .mat-mdc-card-header {
+    .mat-mdc-card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #1976d2;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .mat-mdc-card-subtitle {
+      color: #666;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.loading-container {
+  text-align: center;
+  padding: 2rem;
+
+  p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+}
+
+.cakes-info {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+
+  .cakes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2rem;
+    }
+
+    .add-cake-section {
+      flex: 1;
+      min-width: 300px;
+
+      .add-cake-field {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .add-cake-section {
+        min-width: auto;
+      }
+    }
+  }
+
+  .cakes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .no-cakes {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-style: italic;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .cake-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: white;
+      border-radius: 4px;
+      border-left: 4px solid #1976d2;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+      .cake-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        .cake-name {
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 0.25rem;
+        }
+
+        .cake-details {
+          color: #666;
+          font-size: 0.9rem;
+        }
+      }
+
+      button {
+        margin-left: 1rem;
+
+        &:hover {
+          background-color: rgba(244, 67, 54, 0.1);
+        }
+      }
+
+      &:hover {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+        transition: all 0.2s ease-in-out;
+      }
+    }
+  }
+}
+
+.edit-form {
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .checkbox-field {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      min-height: 56px; // Align with mat-form-field height
+    }
+  }
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+// Material Design form field styling
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .edit-order-container {
+    margin: 1rem;
+    padding: 0.5rem;
+  }
+
+  .card-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

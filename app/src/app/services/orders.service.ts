@@ -3,7 +3,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Orders } from '../models/orders.interface';
 import { CreateOrder } from '../models/create-order.interface';
+import { PaymentMethod } from '../models/paymentMethods.enum';
 import { environment } from '../../environments/environment';
+
+export interface UpdateOrderData {
+  total?: number;
+  Withdrawal_date?: Date;
+  PaymentMethod?: PaymentMethod;
+  deposit?: number;
+  remaining_balance?: number;
+  delivered?: boolean;
+  cakes?: { id: string }[];
+}
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +44,7 @@ export class OrdersService {
     );
   }
 
-  updateOrder(orderId: string, orderData: Partial<Orders>): Observable<Orders> {
+  updateOrder(orderId: string, orderData: UpdateOrderData): Observable<Orders> {
     return this.httpClient.patch<Orders>(
       `${this.#apiBaseUrl}/order/${orderId}`,
       orderData,

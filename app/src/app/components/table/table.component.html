@@ -164,8 +164,12 @@
     <tr
       mat-row
       *matRowDef="let row; columns: visibleColumns.concat(['actions'])"
-      [style.background-color]="getNestedProperty(row, 'color')"
-      [style.color]="getTextColor(getNestedProperty(row, 'color'))"
+      [style.background-color]="
+        hasColorData() ? getNestedProperty(row, 'color') : ''
+      "
+      [style.color]="
+        hasColorData() ? getTextColor(getNestedProperty(row, 'color')) : '#000'
+      "
     ></tr>
   </table>
   <mat-paginator

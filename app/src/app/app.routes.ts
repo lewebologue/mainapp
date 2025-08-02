@@ -4,6 +4,7 @@ import { ClientsComponent } from './pages/clients/clients.component';
 import { KpiComponent } from './pages/kpi/kpi.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { NewOrderComponent } from './pages/new-order/new-order.component';
+import { EditOrderComponent } from './pages/edit-order/edit-order.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 // import { RoleGuard } from './guards/role.guard';
@@ -31,6 +32,11 @@ export const routes: Routes = [
   {
     path: 'add-orders',
     component: NewOrderComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit-order/:id',
+    component: EditOrderComponent,
     canActivate: [AuthGuard],
   },
   {

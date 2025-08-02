@@ -48,6 +48,7 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   @Output() deleteButtonClick = new EventEmitter<string>();
   @Output() addButtonClick = new EventEmitter<string>();
   @Output() markAsDeliveredClick = new EventEmitter<string>();
+  @Output() directEditClick = new EventEmitter<string>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -92,6 +93,10 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   }
 
   getTextColor(backgroundColor: string): string {
+    if (!backgroundColor || backgroundColor === '') {
+      return '#000';
+    }
+
     const lightColors = [
       '#FFF',
       '#F5F5F5',
@@ -106,6 +111,13 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
     }
 
     return lightColors.includes(backgroundColor) ? '#000' : '#fff';
+  }
+
+  hasColorData(): boolean {
+    return (
+      this.displayedColumns.includes('color') &&
+      this.cakeColorOptions.length > 0
+    );
   }
 
   ngAfterViewInit() {
@@ -131,6 +143,10 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   }
 
   onEdit(id: string) {
+    if (this.orderTable) {
+      this.directEditClick.emit(id);
+      return;
+    }
     this.editModeID = id;
     this.editMode = true;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

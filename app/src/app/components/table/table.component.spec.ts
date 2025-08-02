@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup } from '@angular/forms';
@@ -45,7 +46,9 @@ describe('TableComponent', () => {
     component.editMode = true;
     component.editModeID = '1';
     component.onValid();
-    expect(component.editButtonClick.emit).toHaveBeenCalledWith(component.formGroup);
+    expect(component.editButtonClick.emit).toHaveBeenCalledWith(
+      component.formGroup,
+    );
     expect(component.editMode).toBeFalse();
     expect(component.editModeID).toBeNull();
   });
@@ -61,13 +64,12 @@ describe('TableComponent', () => {
   it('should call addCakeToOrder and log', () => {
     spyOn(console, 'log');
     component.addCakeToOrder('cake1');
+    // eslint-disable-next-line no-console
     expect(console.log).toHaveBeenCalledWith(['cake1']);
   });
 
   it('should update paginator in ngAfterViewInit', () => {
-    // @ts-ignore
-    component.dataSource = new MatTableDataSource([]);
-    // Simuler le paginator
+    component.dataSource = new MatTableDataSource([] as any[]);
     const paginatorMock = { pageSize: 10 } as any;
     component.paginator = paginatorMock;
     component.displayedColumns = ['name'];
@@ -77,8 +79,7 @@ describe('TableComponent', () => {
   });
 
   it('should update paginator in ngOnChanges', () => {
-    // @ts-ignore
-    component.dataSource = new MatTableDataSource([]);
+    component.dataSource = new MatTableDataSource([] as any[]);
     const paginatorMock = { pageSize: 10 } as any;
     component.paginator = paginatorMock;
     component.ngOnChanges({

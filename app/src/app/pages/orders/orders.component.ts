@@ -6,6 +6,7 @@ import { Orders } from '../../models/orders.interface';
 import { ButtonComponent } from '../../components/button/button.component';
 import { OrdersService } from '../../services/orders.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-orders',
   imports: [MatTabsModule, TableComponent, ButtonComponent],
@@ -15,6 +16,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class OrdersComponent implements OnInit {
   #orderService = inject(OrdersService);
   #formBuilder = inject(FormBuilder);
+  #router = inject(Router);
 
   todayOrders: MatTableDataSource<Orders> = new MatTableDataSource<Orders>([]);
   upcomingOrders: MatTableDataSource<Orders> = new MatTableDataSource<Orders>(
@@ -63,34 +65,15 @@ export class OrdersComponent implements OnInit {
       alert('Erreur: ID de commande manquant');
       return;
     }
+    this.#router.navigate(['/edit-order', orderId]);
+  }
 
-    // Préparer les données pour la mise à jour
-    const updateData: Partial<Orders> = {
-      Withdrawal_date: formData.Withdrawal_date
-        ? new Date(formData.Withdrawal_date)
-        : undefined,
-      total: formData.total ? Number(formData.total) : undefined,
-      delivered:
-        formData.delivered !== undefined ? formData.delivered : undefined,
-    };
-
-    // Nettoyer les valeurs undefined
-    Object.keys(updateData).forEach((key) => {
-      if (updateData[key as keyof Orders] === undefined) {
-        delete updateData[key as keyof Orders];
-      }
-    });
-
-    this.#orderService.updateOrder(orderId, updateData).subscribe({
-      next: () => {
-        alert('Commande mise à jour avec succès !');
-        this.getAllOrders();
-      },
-      error: (error: unknown) => {
-        console.error('Erreur lors de la mise à jour de la commande:', error);
-        alert('Erreur lors de la mise à jour de la commande.');
-      },
-    });
+  navigateToEditOrder(orderId: string) {
+    if (!orderId) {
+      alert('Erreur: ID de commande manquant');
+      return;
+    }
+    this.#router.navigate(['/edit-order', orderId]);
   }
 
   deleteOrder(orderId: string) {
