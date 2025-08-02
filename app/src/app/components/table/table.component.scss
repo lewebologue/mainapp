@@ -46,4 +46,17 @@
       cursor: pointer;
     }
   }
+  .delivered-icon {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .color-indicator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
+  }
 }

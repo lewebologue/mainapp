@@ -53,6 +53,7 @@ export class CakesComponent implements OnInit {
     name: [''],
     parts: [0],
     price: [0],
+    color: ['#F5F5F5'],
   });
 
   cakeColorOptions = [
@@ -108,6 +109,7 @@ export class CakesComponent implements OnInit {
       name: data.value.name,
       parts: parseInt(data.value.parts),
       price: parseInt(data.value.price),
+      color: data.value.color,
     };
     this.#cakesService
       .updateCake(data.value.id, editCakeData)

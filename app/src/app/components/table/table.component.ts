@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-table',
@@ -30,6 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -41,6 +43,7 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   @Input() addButton = false;
   @Input() formGroup!: FormGroup;
   @Input() orderTable = false;
+  @Input() cakeColorOptions: { value: string; label: string }[] = [];
   @Output() editButtonClick = new EventEmitter<FormGroup>();
   @Output() deleteButtonClick = new EventEmitter<string>();
   @Output() addButtonClick = new EventEmitter<string>();
@@ -51,10 +54,19 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
   editMode = false;
   editModeID: string | null = null;
 
+  get visibleColumns(): string[] {
+    if (this.editMode) {
+      return this.displayedColumns;
+    } else {
+      return this.displayedColumns.filter((column) => column !== 'color');
+    }
+  }
+
   tableEnum: Record<string, string> = {
     name: 'Nom',
     price: 'Prix',
     parts: 'Nb de parts',
+    color: 'Couleur',
     lastname: 'Nom ',
     firstname: 'Prénom',
     phone: 'Téléphone',
@@ -72,17 +84,22 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
     return result?.toString() || '';
   }
 
+  getCakeColorLabel(colorValue: string): string {
+    const colorOption = this.cakeColorOptions.find(
+      (option) => option.value === colorValue,
+    );
+    return colorOption ? colorOption.label : colorValue;
+  }
+
   ngAfterViewInit() {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
     }
 
-    // Ne créer des contrôles que si le formGroup n'est pas déjà fourni
     if (!this.formGroup) {
       const controls: Record<string, FormControl> = {};
       this.displayedColumns.forEach((column) => {
         if (column !== 'actions' && !column.includes('.')) {
-          // Exclure les propriétés imbriquées
           controls[column] = new FormControl('');
         }
       });

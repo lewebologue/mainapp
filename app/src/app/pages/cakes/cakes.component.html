@@ -64,7 +64,8 @@
 <app-table
   [dataSource]="apiData"
   [formGroup]="editCakeControlGroup"
-  [displayedColumns]="['name', 'parts', 'price']"
+  [displayedColumns]="['name', 'parts', 'price', 'color']"
+  [cakeColorOptions]="cakeColorOptions"
   (deleteButtonClick)="deleteCake($event)"
   (editButtonClick)="editCake($event)"
 >

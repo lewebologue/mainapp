@@ -12,7 +12,7 @@
 </div>
 <div class="table_container">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    @for (column of displayedColumns; track column) {
+    @for (column of visibleColumns; track column) {
       <ng-container [matColumnDef]="column" [formGroup]="formGroup">
         <th mat-header-cell *matHeaderCellDef>
           {{ tableEnum[column] || column }}
@@ -34,6 +34,24 @@
                 ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
+            } @else if (column === "color") {
+              <mat-form-field>
+                <mat-label>Couleur</mat-label>
+                <mat-select [formControlName]="column">
+                  <mat-option
+                    *ngFor="let color of cakeColorOptions"
+                    [value]="color.value"
+                    [style.background-color]="color.value"
+                    [style.color]="
+                      color.value === '#F5F5F5' || color.value === '#BFE1F6'
+                        ? '#000'
+                        : '#fff'
+                    "
+                  >
+                    {{ color.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             } @else {
               <mat-form-field>
                 <input
@@ -51,7 +69,9 @@
             @if (column === "price" || column === "total") {
               {{ getNestedProperty(element, column) + " €" }}
             } @else if (column === "Withdrawal_date") {
-              {{ $any(getNestedProperty(element, column)) | date: "dd/MM/yyyy" }}
+              {{
+                $any(getNestedProperty(element, column)) | date: "dd/MM/yyyy"
+              }}
             } @else if (column === "delivered") {
               @if (getNestedProperty(element, column)) {
                 <mat-icon color="primary">check_circle</mat-icon>
@@ -60,6 +80,12 @@
                 <mat-icon color="warn">pending</mat-icon>
                 <span>En attente</span>
               }
+            } @else if (column === "color") {
+              <div
+                class="color-indicator"
+                [style.background-color]="getNestedProperty(element, column)"
+                [title]="getCakeColorLabel(getNestedProperty(element, column))"
+              ></div>
             } @else {
               {{ getNestedProperty(element, column) }}
             }
@@ -133,11 +159,11 @@
 
     <tr
       mat-header-row
-      *matHeaderRowDef="displayedColumns.concat(['actions'])"
+      *matHeaderRowDef="visibleColumns.concat(['actions'])"
     ></tr>
     <tr
       mat-row
-      *matRowDef="let row; columns: displayedColumns.concat(['actions'])"
+      *matRowDef="let row; columns: visibleColumns.concat(['actions'])"
     ></tr>
   </table>
   <mat-paginator
