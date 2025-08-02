@@ -91,6 +91,23 @@ export class TableComponent<T> implements AfterViewInit, OnChanges {
     return colorOption ? colorOption.label : colorValue;
   }
 
+  getTextColor(backgroundColor: string): string {
+    const lightColors = [
+      '#FFF',
+      '#F5F5F5',
+      '#BFE1F6',
+      '#F1BD31',
+      '#C5A0A0',
+      '#7FAD8B',
+    ];
+
+    if (backgroundColor === '#F5F5F5') {
+      return '#000';
+    }
+
+    return lightColors.includes(backgroundColor) ? '#000' : '#fff';
+  }
+
   ngAfterViewInit() {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;

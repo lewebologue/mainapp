@@ -59,4 +59,24 @@
     display: inline-block;
     cursor: pointer;
   }
+
+  // Styles pour les lignes colorées
+  .mat-mdc-row {
+    transition: background-color 0.3s ease;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  // Assurer que les icones restent visibles même avec des backgrounds colorés
+  .mat-icon {
+    &.edit-icon,
+    &.delete-icon,
+    &.done-icon,
+    &.delivered-icon {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      padding: 2px;
+    }
+  }
 }
