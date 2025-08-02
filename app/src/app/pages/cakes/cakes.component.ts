@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CakesService } from '../../services/cakes.service';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, of } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-cakes',
@@ -26,6 +27,7 @@ import { catchError, of } from 'rxjs';
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     ButtonComponent,
@@ -44,6 +46,7 @@ export class CakesComponent implements OnInit {
     name: ['', Validators.required],
     parts: [0, Validators.required],
     price: [0, Validators.required],
+    color: ['#F5F5F5', Validators.required],
   });
 
   editCakeControlGroup = this.#formBuilder.group({
@@ -51,6 +54,21 @@ export class CakesComponent implements OnInit {
     parts: [0],
     price: [0],
   });
+
+  cakeColorOptions = [
+    { value: '#F5F5F5', label: 'Blanc' },
+    { value: '#7E6A59', label: 'Marron clair' },
+    { value: '#473822', label: 'Marron' },
+    { value: '#753800', label: 'Chocolat' },
+    { value: '#11734B', label: 'Vert' },
+    { value: '#7FAD8B', label: 'Vert sauge' },
+    { value: '#F1BD31', label: 'Jaune' },
+    { value: '#B19E3A', label: 'Jaune moutarde amora' },
+    { value: '#5A3286', label: 'Violet' },
+    { value: '#C5A0A0', label: 'Rose poudrée' },
+    { value: '#0362F1', label: 'Bleu roi' },
+    { value: '#BFE1F6', label: 'Bleu ciel' },
+  ];
 
   ngOnInit(): void {
     this.getAllCakes();
@@ -69,6 +87,7 @@ export class CakesComponent implements OnInit {
         name: this.addCakeControlGroup.value.name ?? '',
         parts: this.addCakeControlGroup.value.parts ?? 0,
         price: this.addCakeControlGroup.value.price ?? 0,
+        color: this.addCakeControlGroup.value.color ?? '#F5F5F5',
       };
       this.#cakesService
         .createCake(cakeData)

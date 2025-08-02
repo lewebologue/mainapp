@@ -32,6 +32,23 @@
             />
             <span matTextSuffix>€&nbsp;</span>
           </mat-form-field>
+          <mat-form-field>
+            <mat-label>Couleur</mat-label>
+            <mat-select formControlName="color" required>
+              <mat-option
+                *ngFor="let color of cakeColorOptions"
+                [value]="color.value"
+                [style.background-color]="color.value"
+                [style.color]="
+                  color.value === '#F5F5F5' || color.value === '#BFE1F6'
+                    ? '#000'
+                    : '#fff'
+                "
+              >
+                {{ color.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </form>
         <div class="button_container">
           <app-button

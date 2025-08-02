@@ -3,6 +3,7 @@ export interface Cakes {
   name: string;
   price: number;
   parts: number;
+  color?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
