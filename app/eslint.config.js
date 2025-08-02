@@ -2,21 +2,18 @@
 const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
-const prettier = require("eslint-plugin-prettier/recommended");
+const prettier = require("eslint-config-prettier");
 
 module.exports = tseslint.config(
   {
     ignores: ["node_modules", ".angular", "dist"],
   },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
   {
     files: ["**/*.ts"],
-    extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
-      prettier,
-    ],
+    extends: [...angular.configs.tsRecommended],
     processor: angular.processInlineTemplates,
     rules: {
       "@angular-eslint/directive-selector": [
@@ -48,4 +45,5 @@ module.exports = tseslint.config(
     ],
     rules: {},
   },
+  prettier,
 );
