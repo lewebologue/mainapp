@@ -4,6 +4,7 @@ import { AuthenticationController } from './authentication.controller'; // Impor
 import { AuthenticationService } from './authentication.service';
 import { UserModule } from '../user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthGuard } from '../shared/guard/auth/auth.guard';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AuthenticationController], // S'assurer que le contrôleur est déclaré
-  providers: [AuthenticationService],
-  exports: [AuthenticationService],
+  providers: [AuthenticationService, AuthGuard],
+  exports: [AuthenticationService, JwtModule, AuthGuard],
 })
 export class AuthenticationModule {}
