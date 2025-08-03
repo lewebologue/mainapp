@@ -141,5 +141,3 @@ Big thanks to all contributors and users. Powered by [Angular](https://angular.d
 </p>
 
 ---
-
-Let me know if you want this saved to your repository, or if you want to tweak anything!
