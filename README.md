@@ -1,5 +1,3 @@
-Sure! Here’s a more detailed and “awesome” README for your project. I’ll keep it in both French and English so it’s welcoming to a broader audience, and I’ll add sections for screenshots, contribution, and more.
-
 ---
 
 # <p align="center">🚀 MainApp 💻</p>
