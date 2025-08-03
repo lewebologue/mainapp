@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -28,7 +28,7 @@ import { LoginRequest } from '../../models/login.interface';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   #authService = inject(AuthService);
   loginForm: FormGroup;
   hidePassword = true;
@@ -40,6 +40,11 @@ export class LoginComponent {
       email: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+
+  ngOnInit() {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('current_user');
   }
 
   onSubmit() {
