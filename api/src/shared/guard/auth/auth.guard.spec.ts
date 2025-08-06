@@ -76,10 +76,10 @@ describe('AuthGuard', () => {
 
         const result = guard.canActivate(mockExecutionContext);
 
-        expect(reflector.getAllAndOverride).toHaveBeenCalledWith(IS_PUBLIC_KEY, [
-          mockExecutionContext.getHandler(),
-          mockExecutionContext.getClass(),
-        ]);
+        expect(reflector.getAllAndOverride).toHaveBeenCalledWith(
+          IS_PUBLIC_KEY,
+          [mockExecutionContext.getHandler(), mockExecutionContext.getClass()],
+        );
         expect(result).toBe(true);
         expect(jwtService.verify).not.toHaveBeenCalled();
       });
@@ -89,10 +89,10 @@ describe('AuthGuard', () => {
 
         guard.canActivate(mockExecutionContext);
 
-        expect(reflector.getAllAndOverride).toHaveBeenCalledWith(IS_PUBLIC_KEY, [
-          mockExecutionContext.getHandler(),
-          mockExecutionContext.getClass(),
-        ]);
+        expect(reflector.getAllAndOverride).toHaveBeenCalledWith(
+          IS_PUBLIC_KEY,
+          [mockExecutionContext.getHandler(), mockExecutionContext.getClass()],
+        );
       });
     });
 
@@ -102,41 +102,41 @@ describe('AuthGuard', () => {
       });
 
       it('should throw UnauthorizedException when no authorization header is present', () => {
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token manquant'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token manquant'),
+        );
       });
 
       it('should throw UnauthorizedException when authorization header is not a string', () => {
         mockRequest.headers.authorization = 123;
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token manquant'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token manquant'),
+        );
       });
 
       it('should throw UnauthorizedException when authorization header does not start with Bearer', () => {
         mockRequest.headers.authorization = 'Basic token123';
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token manquant'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token manquant'),
+        );
       });
 
       it('should throw UnauthorizedException when Bearer token is missing', () => {
         mockRequest.headers.authorization = 'Bearer';
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token manquant'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token manquant'),
+        );
       });
 
       it('should throw UnauthorizedException when Bearer token is empty', () => {
         mockRequest.headers.authorization = 'Bearer ';
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token manquant'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token manquant'),
+        );
       });
     });
 
@@ -203,9 +203,9 @@ describe('AuthGuard', () => {
           throw new Error('TokenExpiredError');
         });
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token invalide'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token invalide'),
+        );
       });
 
       it('should throw UnauthorizedException when token is malformed', () => {
@@ -214,9 +214,9 @@ describe('AuthGuard', () => {
           throw new Error('JsonWebTokenError');
         });
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token invalide'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token invalide'),
+        );
       });
 
       it('should throw UnauthorizedException when token signature is invalid', () => {
@@ -225,9 +225,9 @@ describe('AuthGuard', () => {
           throw new Error('Invalid signature');
         });
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token invalide'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token invalide'),
+        );
       });
 
       it('should handle any JWT verification error', () => {
@@ -236,9 +236,9 @@ describe('AuthGuard', () => {
           throw new Error('Unknown JWT error');
         });
 
-        expect(() =>
-          guard.canActivate(mockExecutionContext)
-        ).toThrow(new UnauthorizedException('Token invalide'));
+        expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+          new UnauthorizedException('Token invalide'),
+        );
       });
     });
   });
@@ -324,7 +324,7 @@ describe('AuthGuard', () => {
 
       const token = (guard as any).extractTokenFromHeader(mockRequest);
 
-      // La méthode split(' ') ne préserve que le premier espace, 
+      // La méthode split(' ') ne préserve que le premier espace,
       // donc "Bearer   token.with.spaces   " devient ["Bearer", "", "", "token.with.spaces", "", "", ""]
       // et on récupère l'élément à l'index 1 qui est une chaîne vide
       expect(token).toBe('');
@@ -371,9 +371,7 @@ describe('AuthGuard', () => {
         getRequest: jest.fn().mockReturnValue(null),
       });
 
-      expect(() =>
-        guard.canActivate(mockExecutionContext)
-      ).toThrow();
+      expect(() => guard.canActivate(mockExecutionContext)).toThrow();
     });
 
     it('should handle request without headers', () => {
@@ -382,9 +380,9 @@ describe('AuthGuard', () => {
         getRequest: jest.fn().mockReturnValue({}),
       });
 
-      expect(() =>
-        guard.canActivate(mockExecutionContext)
-      ).toThrow(new UnauthorizedException('Token manquant'));
+      expect(() => guard.canActivate(mockExecutionContext)).toThrow(
+        new UnauthorizedException('Token manquant'),
+      );
     });
 
     it('should not modify request when route is public', () => {

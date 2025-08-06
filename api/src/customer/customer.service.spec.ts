@@ -106,7 +106,9 @@ describe('CustomerService', () => {
       const error = new Error('Database constraint violation');
       mockPrismaService.customer.create.mockRejectedValue(error);
 
-      await expect(service.create(createData)).rejects.toThrow('Database constraint violation');
+      await expect(service.create(createData)).rejects.toThrow(
+        'Database constraint violation',
+      );
     });
   });
 
@@ -114,9 +116,9 @@ describe('CustomerService', () => {
     it('should update a customer successfully', async () => {
       const updateParams = {
         where: { id: '1' },
-        data: { 
+        data: {
           firstname: 'Jean-Claude',
-          email: 'jean-claude.dupont@example.com' 
+          email: 'jean-claude.dupont@example.com',
         },
       };
 
@@ -168,7 +170,9 @@ describe('CustomerService', () => {
       const error = new Error('Customer not found');
       mockPrismaService.customer.update.mockRejectedValue(error);
 
-      await expect(service.update(updateParams)).rejects.toThrow('Customer not found');
+      await expect(service.update(updateParams)).rejects.toThrow(
+        'Customer not found',
+      );
     });
   });
 
@@ -202,10 +206,12 @@ describe('CustomerService', () => {
     it('should handle database errors', async () => {
       const whereCondition = { id: '1' };
       const error = new Error('Database connection error');
-      
+
       mockPrismaService.customer.findUnique.mockRejectedValue(error);
 
-      await expect(service.findOne(whereCondition)).rejects.toThrow('Database connection error');
+      await expect(service.findOne(whereCondition)).rejects.toThrow(
+        'Database connection error',
+      );
     });
   });
 
@@ -328,16 +334,22 @@ describe('CustomerService', () => {
 
       mockPrismaService.customer.delete.mockRejectedValue(error);
 
-      await expect(service.delete(whereCondition)).rejects.toThrow('Customer not found');
+      await expect(service.delete(whereCondition)).rejects.toThrow(
+        'Customer not found',
+      );
     });
 
     it('should handle delete errors with foreign key constraints', async () => {
       const whereCondition = { id: '1' };
-      const error = new Error('Foreign key constraint failed: customer has orders');
+      const error = new Error(
+        'Foreign key constraint failed: customer has orders',
+      );
 
       mockPrismaService.customer.delete.mockRejectedValue(error);
 
-      await expect(service.delete(whereCondition)).rejects.toThrow('Foreign key constraint failed: customer has orders');
+      await expect(service.delete(whereCondition)).rejects.toThrow(
+        'Foreign key constraint failed: customer has orders',
+      );
     });
 
     it('should delete customer by other unique field', async () => {

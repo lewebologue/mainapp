@@ -43,17 +43,19 @@ describe('PrismaService', () => {
       await service.onModuleInit();
 
       expect(connectSpy).toHaveBeenCalledTimes(1);
-      
+
       connectSpy.mockRestore();
     });
 
     it('should handle connection errors gracefully', async () => {
-      const connectSpy = jest.spyOn(service, '$connect').mockRejectedValue(
-        new Error('Database connection failed')
+      const connectSpy = jest
+        .spyOn(service, '$connect')
+        .mockRejectedValue(new Error('Database connection failed'));
+
+      await expect(service.onModuleInit()).rejects.toThrow(
+        'Database connection failed',
       );
 
-      await expect(service.onModuleInit()).rejects.toThrow('Database connection failed');
-      
       connectSpy.mockRestore();
     });
   });
@@ -86,7 +88,9 @@ describe('PrismaService', () => {
     });
 
     it('should support disconnect operation', async () => {
-      const disconnectSpy = jest.spyOn(service, '$disconnect').mockResolvedValue();
+      const disconnectSpy = jest
+        .spyOn(service, '$disconnect')
+        .mockResolvedValue();
 
       await service.$disconnect();
 
@@ -94,9 +98,9 @@ describe('PrismaService', () => {
     });
 
     it('should handle disconnect errors', async () => {
-      const disconnectSpy = jest.spyOn(service, '$disconnect').mockRejectedValue(
-        new Error('Disconnect failed')
-      );
+      const disconnectSpy = jest
+        .spyOn(service, '$disconnect')
+        .mockRejectedValue(new Error('Disconnect failed'));
 
       await expect(service.$disconnect()).rejects.toThrow('Disconnect failed');
     });
@@ -169,7 +173,9 @@ describe('PrismaService', () => {
 
     it('should support interactive transactions', async () => {
       const mockTransaction = jest.fn().mockResolvedValue('transaction result');
-      const transactionSpy = jest.spyOn(service, '$transaction').mockImplementation(mockTransaction);
+      const transactionSpy = jest
+        .spyOn(service, '$transaction')
+        .mockImplementation(mockTransaction);
 
       const callback = jest.fn().mockResolvedValue('callback result');
       const result = await service.$transaction(callback);
@@ -180,11 +186,17 @@ describe('PrismaService', () => {
 
     it('should support batch transactions', async () => {
       const mockOperations = [
-        service.user.create({ data: { email: 'test@test.com', name: 'Test', password: 'test' } }),
-        service.customer.create({ data: { lastname: 'Doe', firstname: 'John' } })
+        service.user.create({
+          data: { email: 'test@test.com', name: 'Test', password: 'test' },
+        }),
+        service.customer.create({
+          data: { lastname: 'Doe', firstname: 'John' },
+        }),
       ];
 
-      const transactionSpy = jest.spyOn(service, '$transaction').mockResolvedValue(['user', 'customer']);
+      const transactionSpy = jest
+        .spyOn(service, '$transaction')
+        .mockResolvedValue(['user', 'customer']);
 
       const result = await service.$transaction(mockOperations);
 
@@ -193,13 +205,15 @@ describe('PrismaService', () => {
     });
 
     it('should handle transaction errors', async () => {
-      const transactionSpy = jest.spyOn(service, '$transaction').mockRejectedValue(
-        new Error('Transaction failed')
-      );
+      const transactionSpy = jest
+        .spyOn(service, '$transaction')
+        .mockRejectedValue(new Error('Transaction failed'));
 
       const callback = jest.fn();
-      
-      await expect(service.$transaction(callback)).rejects.toThrow('Transaction failed');
+
+      await expect(service.$transaction(callback)).rejects.toThrow(
+        'Transaction failed',
+      );
     });
   });
 
@@ -214,37 +228,45 @@ describe('PrismaService', () => {
 
     it('should support raw queries with $queryRaw', async () => {
       const mockResult = [{ count: 5 }];
-      const queryRawSpy = jest.spyOn(service, '$queryRaw').mockResolvedValue(mockResult);
+      const queryRawSpy = jest
+        .spyOn(service, '$queryRaw')
+        .mockResolvedValue(mockResult);
 
-      const result = await service.$queryRaw`SELECT COUNT(*) as count FROM "User"`;
+      const result =
+        await service.$queryRaw`SELECT COUNT(*) as count FROM "User"`;
 
       expect(queryRawSpy).toHaveBeenCalled();
       expect(result).toEqual(mockResult);
     });
 
     it('should support raw execution with $executeRaw', async () => {
-      const executeRawSpy = jest.spyOn(service, '$executeRaw').mockResolvedValue(1);
+      const executeRawSpy = jest
+        .spyOn(service, '$executeRaw')
+        .mockResolvedValue(1);
 
-      const result = await service.$executeRaw`UPDATE "User" SET "name" = 'Updated' WHERE "id" = 'test-id'`;
+      const result =
+        await service.$executeRaw`UPDATE "User" SET "name" = 'Updated' WHERE "id" = 'test-id'`;
 
       expect(executeRawSpy).toHaveBeenCalled();
       expect(result).toBe(1);
     });
 
     it('should handle raw query errors', async () => {
-      const queryRawSpy = jest.spyOn(service, '$queryRaw').mockRejectedValue(
-        new Error('SQL syntax error')
-      );
+      const queryRawSpy = jest
+        .spyOn(service, '$queryRaw')
+        .mockRejectedValue(new Error('SQL syntax error'));
 
       await expect(
-        service.$queryRaw`SELECT * FROM invalid_table`
+        service.$queryRaw`SELECT * FROM invalid_table`,
       ).rejects.toThrow('SQL syntax error');
     });
   });
 
   describe('Service Cleanup', () => {
     it('should provide cleanup method for testing', async () => {
-      const disconnectSpy = jest.spyOn(service, '$disconnect').mockResolvedValue();
+      const disconnectSpy = jest
+        .spyOn(service, '$disconnect')
+        .mockResolvedValue();
 
       await service.$disconnect();
 
@@ -252,7 +274,9 @@ describe('PrismaService', () => {
     });
 
     it('should handle multiple disconnect calls gracefully', async () => {
-      const disconnectSpy = jest.spyOn(service, '$disconnect').mockResolvedValue();
+      const disconnectSpy = jest
+        .spyOn(service, '$disconnect')
+        .mockResolvedValue();
 
       await service.$disconnect();
       await service.$disconnect();
@@ -265,21 +289,25 @@ describe('PrismaService', () => {
     it('should handle Prisma client initialization errors', async () => {
       // Simuler une erreur d'initialisation
       const originalConnect = service.$connect;
-      service.$connect = jest.fn().mockRejectedValue(new Error('Prisma initialization failed'));
+      service.$connect = jest
+        .fn()
+        .mockRejectedValue(new Error('Prisma initialization failed'));
 
-      await expect(service.onModuleInit()).rejects.toThrow('Prisma initialization failed');
+      await expect(service.onModuleInit()).rejects.toThrow(
+        'Prisma initialization failed',
+      );
 
       // Restaurer la méthode originale
       service.$connect = originalConnect;
     });
 
     it('should be resilient to database connection issues', async () => {
-      const connectSpy = jest.spyOn(service, '$connect').mockRejectedValue(
-        new Error('ECONNREFUSED')
-      );
+      const connectSpy = jest
+        .spyOn(service, '$connect')
+        .mockRejectedValue(new Error('ECONNREFUSED'));
 
       await expect(service.onModuleInit()).rejects.toThrow('ECONNREFUSED');
-      
+
       expect(connectSpy).toHaveBeenCalled();
     });
   });

@@ -117,7 +117,9 @@ describe('CakeService', () => {
       const error = new Error('Database error');
       mockPrismaService.cake.create.mockRejectedValue(error);
 
-      await expect(service.createCake(createData)).rejects.toThrow('Database error');
+      await expect(service.createCake(createData)).rejects.toThrow(
+        'Database error',
+      );
     });
   });
 
@@ -254,7 +256,9 @@ describe('CakeService', () => {
       const error = new Error('Cake not found');
       mockPrismaService.cake.update.mockRejectedValue(error);
 
-      await expect(service.updateCake(updateParams)).rejects.toThrow('Cake not found');
+      await expect(service.updateCake(updateParams)).rejects.toThrow(
+        'Cake not found',
+      );
     });
   });
 
@@ -301,10 +305,12 @@ describe('CakeService', () => {
     it('should handle find unique errors', async () => {
       const whereCondition = { id: '1' };
       const error = new Error('Database connection error');
-      
+
       mockPrismaService.cake.findUnique.mockRejectedValue(error);
 
-      await expect(service.findOneCake(whereCondition)).rejects.toThrow('Database connection error');
+      await expect(service.findOneCake(whereCondition)).rejects.toThrow(
+        'Database connection error',
+      );
     });
   });
 
@@ -341,7 +347,9 @@ describe('CakeService', () => {
 
       mockPrismaService.cake.delete.mockRejectedValue(error);
 
-      await expect(service.deleteCake(whereCondition)).rejects.toThrow('Cake not found');
+      await expect(service.deleteCake(whereCondition)).rejects.toThrow(
+        'Cake not found',
+      );
     });
 
     it('should handle delete errors with foreign key constraints', async () => {
@@ -350,7 +358,9 @@ describe('CakeService', () => {
 
       mockPrismaService.cake.delete.mockRejectedValue(error);
 
-      await expect(service.deleteCake(whereCondition)).rejects.toThrow('Foreign key constraint failed');
+      await expect(service.deleteCake(whereCondition)).rejects.toThrow(
+        'Foreign key constraint failed',
+      );
     });
   });
 });

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateKpiDto } from './dto/create-kpi.dto';
-import { UpdateKpiDto } from './dto/update-kpi.dto';
+// import { CreateKpiDto } from './dto/create-kpi.dto';
+// import { UpdateKpiDto } from './dto/update-kpi.dto';
 
 @Injectable()
 export class KpiService {
-  create(createKpiDto: CreateKpiDto) {
+  create(_createKpiDto: any) {
     return 'This action adds a new kpi';
   }
 
@@ -16,7 +16,7 @@ export class KpiService {
     return `This action returns a #${id} kpi`;
   }
 
-  update(id: number, updateKpiDto: UpdateKpiDto) {
+  update(id: number, _updateKpiDto: any) {
     return `This action updates a #${id} kpi`;
   }
 

@@ -1,0 +1,110 @@
+name: Debug Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      debug_level:
+        description: "Debug level (info, verbose, debug)"
+        required: false
+        default: "info"
+        type: choice
+        options:
+          - info
+          - verbose
+          - debug
+
+jobs:
+  debug-environment:
+    name: Debug GitHub Actions Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Debug repository structure
+        run: |
+          echo "🔍 Current working directory: $(pwd)"
+          echo ""
+          echo "📁 Repository structure:"
+          find . -type d -name ".git" -prune -o -type d -print | head -20
+          echo ""
+          echo "📄 Root files:"
+          ls -la
+          echo ""
+          echo "📄 API directory:"
+          if [ -d "./api" ]; then
+            ls -la ./api/
+            echo ""
+            echo "📄 API package.json exists:"
+            [ -f "./api/package.json" ] && echo "✅ Yes" || echo "❌ No"
+          else
+            echo "❌ API directory not found"
+          fi
+
+      - name: Debug Node.js environment
+        run: |
+          echo "🟢 Node.js version: $(node --version)"
+          echo "📦 NPM version: $(npm --version)"
+          echo "🔧 NPX version: $(npx --version)"
+
+      - name: Debug API dependencies (if exists)
+        run: |
+          if [ -d "./api" ] && [ -f "./api/package.json" ]; then
+            cd ./api
+            echo "📋 Package.json scripts:"
+            npm run
+            echo ""
+            echo "📦 Installing dependencies..."
+            npm ci
+            echo ""
+            echo "🔧 Prisma version:"
+            npx prisma --version || echo "❌ Prisma not available"
+            echo ""
+            echo "🧪 Jest configuration:"
+            [ -f "jest.config.js" ] && echo "✅ jest.config.js found" || echo "❌ jest.config.js not found"
+          else
+            echo "❌ Cannot check API dependencies - directory or package.json missing"
+          fi
+
+      - name: Debug test files
+        run: |
+          if [ -d "./api" ]; then
+            cd ./api
+            echo "🧪 Test files found:"
+            find . -name "*.spec.ts" -o -name "*.test.ts" | head -10
+            echo ""
+            echo "📁 Source structure:"
+            find ./src -type d | head -10
+          fi
+
+      - name: Test simple commands
+        run: |
+          echo "📍 Testing basic commands..."
+          echo "Current user: $(whoami)"
+          echo "Current directory: $(pwd)"
+          echo "Available space: $(df -h . | tail -1)"
+          echo "Memory info: $(free -h | head -2)"
+
+      - name: Verbose output (if requested)
+        if: ${{ github.event.inputs.debug_level == 'verbose' || github.event.inputs.debug_level == 'debug' }}
+        run: |
+          echo "🔍 Verbose debugging..."
+          echo "Environment variables:"
+          env | grep -E "(GITHUB_|RUNNER_)" | sort
+          echo ""
+          echo "Path directories:"
+          echo $PATH | tr ':' '\n'
+
+      - name: Deep debug (if requested)
+        if: ${{ github.event.inputs.debug_level == 'debug' }}
+        run: |
+          echo "🐛 Deep debugging..."
+          echo "Process list:"
+          ps aux | head -10
+          echo ""
+          echo "Network info:"
+          ip addr show | head -10 || ifconfig | head -10
+          echo ""
+          echo "Disk usage:"
+          du -sh ./* | sort -hr | head -10

@@ -83,7 +83,7 @@ jobs:
           echo "| AuthGuard | 26 | ✅ |" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload coverage to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: ./api/coverage/

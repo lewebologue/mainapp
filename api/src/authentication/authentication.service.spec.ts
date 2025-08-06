@@ -60,7 +60,6 @@ describe('AuthenticationService', () => {
     const mockToken = 'mock.jwt.token';
 
     it('should successfully sign in with valid credentials', async () => {
-      
       // Arrange
       userService.findByEmailOrName.mockResolvedValue(mockUser);
       mockedBcrypt.compare.mockResolvedValue(true as never);
@@ -84,7 +83,6 @@ describe('AuthenticationService', () => {
     });
 
     it('should throw HttpException when user is not found', async () => {
-
       // Arrange
       userService.findByEmailOrName.mockResolvedValue(null);
 
@@ -98,7 +96,6 @@ describe('AuthenticationService', () => {
     });
 
     it('should throw HttpException when password is invalid', async () => {
-
       // Arrange
       userService.findByEmailOrName.mockResolvedValue(mockUser);
       mockedBcrypt.compare.mockResolvedValue(false as never);
@@ -113,7 +110,6 @@ describe('AuthenticationService', () => {
     });
 
     it('should handle user with empty name gracefully', async () => {
-
       // Arrange
       const userWithoutName = { ...mockUser, name: null };
       userService.findByEmailOrName.mockResolvedValue(userWithoutName);
@@ -132,7 +128,6 @@ describe('AuthenticationService', () => {
     });
 
     it('should work with email as identifier', async () => {
-
       // Arrange
       const emailIdentifier = 'test@example.com';
       userService.findByEmailOrName.mockResolvedValue(mockUser);
@@ -143,7 +138,9 @@ describe('AuthenticationService', () => {
       const result = await service.signIn(emailIdentifier, password);
 
       // Assert
-      expect(userService.findByEmailOrName).toHaveBeenCalledWith(emailIdentifier);
+      expect(userService.findByEmailOrName).toHaveBeenCalledWith(
+        emailIdentifier,
+      );
       expect(result).toEqual({
         user: mockUser.name,
         role: mockUser.Role,
@@ -152,7 +149,6 @@ describe('AuthenticationService', () => {
     });
 
     it('should handle different user roles correctly', async () => {
-
       // Arrange
       const adminUser = { ...mockUser, Role: Role.ADMIN };
       userService.findByEmailOrName.mockResolvedValue(adminUser);

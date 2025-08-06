@@ -13,7 +13,7 @@ describe('OrderService', () => {
     total: 45.99,
     Withdrawal_date: new Date('2025-08-15T14:30:00Z'),
     PaymentMethod: PaymentMethod.CB,
-    deposit: 20.00,
+    deposit: 20.0,
     remaining_balance: 25.99,
     delivered: false,
     createdAt: new Date('2025-08-06T00:00:00Z'),
@@ -45,7 +45,7 @@ describe('OrderService', () => {
       {
         id: 'cake-2',
         name: 'Vanilla Cake',
-        price: 20.00,
+        price: 20.0,
         parts: 6,
         color: '#F5F5DC',
         createdAt: new Date('2025-01-02T00:00:00Z'),
@@ -94,14 +94,11 @@ describe('OrderService', () => {
         total: 45.99,
         Withdrawal_date: new Date('2025-08-15T14:30:00Z'),
         PaymentMethod: PaymentMethod.CB,
-        deposit: 20.00,
+        deposit: 20.0,
         remaining_balance: 25.99,
         cakes: {
-          connect: [
-            { id: 'cake-1' },
-            { id: 'cake-2' }
-          ]
-        }
+          connect: [{ id: 'cake-1' }, { id: 'cake-2' }],
+        },
       };
 
       mockPrismaService.order.create.mockResolvedValue(mockOrder);
@@ -117,17 +114,17 @@ describe('OrderService', () => {
     it('should create an order with minimal data (no deposit)', async () => {
       const createDataMinimal: Prisma.OrderCreateInput = {
         customer: { connect: { id: 'customer-1' } },
-        total: 30.00,
+        total: 30.0,
         Withdrawal_date: new Date('2025-08-20T10:00:00Z'),
         PaymentMethod: PaymentMethod.ESPECES,
         cakes: {
-          connect: [{ id: 'cake-1' }]
-        }
+          connect: [{ id: 'cake-1' }],
+        },
       };
 
       const minimalOrder = {
         ...mockOrder,
-        total: 30.00,
+        total: 30.0,
         PaymentMethod: PaymentMethod.ESPECES,
         deposit: null,
         remaining_balance: null,
@@ -146,23 +143,23 @@ describe('OrderService', () => {
     it('should create an order with different payment methods', async () => {
       const createDataCheque: Prisma.OrderCreateInput = {
         customer: { connect: { id: 'customer-2' } },
-        total: 75.50,
+        total: 75.5,
         Withdrawal_date: new Date('2025-08-18T16:00:00Z'),
         PaymentMethod: PaymentMethod.CHEQUE,
-        deposit: 30.00,
-        remaining_balance: 45.50,
+        deposit: 30.0,
+        remaining_balance: 45.5,
         cakes: {
-          connect: [{ id: 'cake-3' }]
-        }
+          connect: [{ id: 'cake-3' }],
+        },
       };
 
       const chequeOrder = {
         ...mockOrder,
         customerId: 'customer-2',
-        total: 75.50,
+        total: 75.5,
         PaymentMethod: PaymentMethod.CHEQUE,
-        deposit: 30.00,
-        remaining_balance: 45.50,
+        deposit: 30.0,
+        remaining_balance: 45.5,
       };
 
       mockPrismaService.order.create.mockResolvedValue(chequeOrder);
@@ -178,7 +175,7 @@ describe('OrderService', () => {
     it('should handle creation errors', async () => {
       const createData: Prisma.OrderCreateInput = {
         customer: { connect: { id: 'nonexistent-customer' } },
-        total: 50.00,
+        total: 50.0,
         Withdrawal_date: new Date('2025-08-15T14:30:00Z'),
         PaymentMethod: PaymentMethod.CB,
       };
@@ -186,7 +183,9 @@ describe('OrderService', () => {
       const error = new Error('Customer not found');
       mockPrismaService.order.create.mockRejectedValue(error);
 
-      await expect(service.createOrder(createData)).rejects.toThrow('Customer not found');
+      await expect(service.createOrder(createData)).rejects.toThrow(
+        'Customer not found',
+      );
     });
   });
 
@@ -238,9 +237,9 @@ describe('OrderService', () => {
 
     it('should find orders with filter and sort conditions', async () => {
       const params = {
-        where: { 
+        where: {
           delivered: false,
-          total: { gte: 20 }
+          total: { gte: 20 },
         },
         orderBy: { Withdrawal_date: 'asc' as const },
       };
@@ -253,9 +252,9 @@ describe('OrderService', () => {
         skip: undefined,
         take: undefined,
         cursor: undefined,
-        where: { 
+        where: {
           delivered: false,
-          total: { gte: 20 }
+          total: { gte: 20 },
         },
         orderBy: { Withdrawal_date: 'asc' },
         include: {
@@ -296,7 +295,9 @@ describe('OrderService', () => {
       const error = new Error('Database query error');
       mockPrismaService.order.findMany.mockRejectedValue(error);
 
-      await expect(service.findAllOrder({})).rejects.toThrow('Database query error');
+      await expect(service.findAllOrder({})).rejects.toThrow(
+        'Database query error',
+      );
     });
   });
 
@@ -304,10 +305,10 @@ describe('OrderService', () => {
     it('should update an order successfully', async () => {
       const updateParams = {
         where: { id: '1' },
-        data: { 
+        data: {
           total: 55.99,
           delivered: true,
-          remaining_balance: 0
+          remaining_balance: 0,
         },
       };
 
@@ -354,10 +355,10 @@ describe('OrderService', () => {
     it('should update order payment information', async () => {
       const updateParams = {
         where: { id: '1' },
-        data: { 
+        data: {
           deposit: 45.99,
           remaining_balance: 0,
-          PaymentMethod: PaymentMethod.VIREMENT
+          PaymentMethod: PaymentMethod.VIREMENT,
         },
       };
 
@@ -388,7 +389,9 @@ describe('OrderService', () => {
       const error = new Error('Order not found');
       mockPrismaService.order.update.mockRejectedValue(error);
 
-      await expect(service.updateOrder(updateParams)).rejects.toThrow('Order not found');
+      await expect(service.updateOrder(updateParams)).rejects.toThrow(
+        'Order not found',
+      );
     });
   });
 
@@ -412,7 +415,9 @@ describe('OrderService', () => {
 
       mockPrismaService.order.delete.mockRejectedValue(error);
 
-      await expect(service.deleteOrder(whereCondition)).rejects.toThrow('Order not found');
+      await expect(service.deleteOrder(whereCondition)).rejects.toThrow(
+        'Order not found',
+      );
     });
 
     it('should delete order by different unique identifier', async () => {
@@ -433,7 +438,9 @@ describe('OrderService', () => {
     it('should find an order by id with relations', async () => {
       const whereCondition = { id: '1' };
 
-      mockPrismaService.order.findUnique.mockResolvedValue(mockOrderWithRelations);
+      mockPrismaService.order.findUnique.mockResolvedValue(
+        mockOrderWithRelations,
+      );
 
       const result = await service.findOneOrder(whereCondition);
 
@@ -467,15 +474,17 @@ describe('OrderService', () => {
     it('should handle database errors', async () => {
       const whereCondition = { id: '1' };
       const error = new Error('Database connection error');
-      
+
       mockPrismaService.order.findUnique.mockRejectedValue(error);
 
-      await expect(service.findOneOrder(whereCondition)).rejects.toThrow('Database connection error');
+      await expect(service.findOneOrder(whereCondition)).rejects.toThrow(
+        'Database connection error',
+      );
     });
 
     it('should find order with complex relations', async () => {
       const whereCondition = { id: '1' };
-      
+
       const complexOrderWithRelations = {
         ...mockOrderWithRelations,
         customer: {
@@ -486,11 +495,13 @@ describe('OrderService', () => {
           {
             ...mockOrderWithRelations.cakes[0],
             orders: [], // Évite les références circulaires dans les tests
-          }
-        ]
+          },
+        ],
       };
 
-      mockPrismaService.order.findUnique.mockResolvedValue(complexOrderWithRelations);
+      mockPrismaService.order.findUnique.mockResolvedValue(
+        complexOrderWithRelations,
+      );
 
       const result = await service.findOneOrder(whereCondition);
 
